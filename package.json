@@ -2,7 +2,7 @@
     "name": "create-chayns-app",
     "version": "1.0.0",
     "private": false,
-    "description": "Creates a new chayns® project in one command.",
+    "description": "Create a new chayns® development project in one command.",
     "keywords": [
         "chayns",
         "react",
