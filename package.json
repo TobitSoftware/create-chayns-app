@@ -1,0 +1,52 @@
+{
+    "name": "create-chayns-app",
+    "version": "1.0.0",
+    "private": false,
+    "description": "Creates a new chayns® project in one command.",
+    "keywords": [
+        "chayns",
+        "react",
+        "chayns-toolkit",
+        "chayns-components",
+        "starter-kit"
+    ],
+    "bugs": {
+        "url": "https://github.com/TobitSoftware/create-chayns-app/issues",
+        "email": "leonhard.driesch@tobit.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TobitSoftware/create-chayns-app.git"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Leonhard Driesch",
+        "email": "leonhard.driesch@tobit.com"
+    },
+    "main": "index.js",
+    "bin": "dist/index.js",
+    "scripts": {
+        "build": "ncc build src/index.js -o dist -m",
+        "format": "prettier . --ignore-path .gitignore --write",
+        "prepublishOnly": "yarn build",
+        "start": "node src/index.js"
+    },
+    "devDependencies": {
+        "@vercel/ncc": "^0.24.1",
+        "chalk": "^4.1.0",
+        "commander": "^6.1.0",
+        "enquirer": "^2.3.6",
+        "eslint": "^7.11.0",
+        "execa": "^4.0.3",
+        "fast-glob": "^3.2.4",
+        "is-npm": "^5.0.0",
+        "mkdirp": "^1.0.4",
+        "ora": "^5.1.0",
+        "prettier": "^2.1.2",
+        "prettier-plugin-packagejson": "^2.2.6",
+        "validate-npm-package-name": "^3.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
