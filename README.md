@@ -70,9 +70,13 @@ your chayns-Site. If you do not have one yet, create one
 After finishing the setup of your site go to Administration > Content > Pages
 and click the "Add Page" button at the top.
 
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-page.png)
+
 There you want to choose the "Include website" option. Enter a name you like
 (e.g. "Local Development") and set the source to `http://localhost:1234/`, which
 is the address your local development server will listen to.
+
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/include-website.png)
 
 Now you can open your newly created page by selecting it in the menu and see
 changes to your project in real time!
@@ -100,22 +104,34 @@ your chayns-Site. If you do not have one yet, create one
 After finishing the setup of your site go to Administration > Content > Pages
 and click the "Add Page" button at the top.
 
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-page.png)
+
 There you want to choose the "Create a page" option. Enter a name you like (e.g.
 "Local Development") and click the button to add the page.
+
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/create-page.png)
 
 Now you can open your newly created page by selecting it in the menu. Here we
 want to go into "admin-mode" by toggling the switch in the main menu, next to
 the name of your site.
 
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/admin-switch.png)
+
 A floating button with a big plus sign should appear in the bottom right corner.
 Click that and choose Interactive > Iframe to add an Iframe to your Page.
+
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-iframe.png)
 
 Hover over your newly created Iframe and activate the chayns-API by clicking on
 the code-symbol and confirming your choice in the dialog.
 
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/iframe-chayns-api.png)
+
 Now we only have to set the source of the Iframe to the address of your local
 development server by tapping on the gear-icon and entering
 `http://localhost:1234/` in the second input field.
+
+![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-local-path.png)
 
 You are now ready to start developing and see changes to your project in real
 time!
