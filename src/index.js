@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const { prompt } = require('enquirer');
 const validate = require('validate-npm-package-name');
 const chalk = require('chalk');
