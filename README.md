@@ -4,10 +4,18 @@
     </h1>
     <p>Create a new chayns® development project in one command.</p>
     <div>
-        <img src="https://img.shields.io/github/license/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
-        <img src="https://img.shields.io/npm/v/create-chayns-app?style=for-the-badge" alt="" />
-        <img src="https://img.shields.io/github/last-commit/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
-        <img src="https://img.shields.io/github/issues-raw/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
+        <a href="https://github.com/TobitSoftware/create-chayns-app/blob/master/LICENSE">
+            <img src="https://img.shields.io/github/license/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
+        </a>
+        <a href="https://www.npmjs.com/package/create-chayns-app">
+            <img src="https://img.shields.io/npm/v/create-chayns-app?style=for-the-badge" alt="" />
+        </a>
+        <a href="https://github.com/TobitSoftware/create-chayns-app/commits">
+            <img src="https://img.shields.io/github/last-commit/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
+        </a>
+        <a href="https://github.com/TobitSoftware/create-chayns-app/issues">
+            <img src="https://img.shields.io/github/issues-raw/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
+        </a>
     </div>
     <hr />
     <img src="https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/demo.gif" alt="Demo of using create-chayns-app">
