@@ -196,7 +196,7 @@ async function createChaynsApp({
 
     console.log(
         `Open the created ${chalk.yellowBright(
-            `./\`${projectName}\``
+            `./${projectName}/`
         )} folder in your favorite editor and start ${chalk.cyanBright(
             '`' + runCommand + '`'
         )}.\n`
