@@ -9,12 +9,9 @@
         <img src="https://img.shields.io/github/last-commit/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
         <img src="https://img.shields.io/github/issues-raw/TobitSoftware/create-chayns-app?style=for-the-badge" alt="" />
     </div>
+    <hr />
+    <img src="https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/demo.gif" alt="Demo of using create-chayns-app">
 </div>
-
----
-
-This project is the easiest and fastest way to start developing projects your
-chayns-Site.
 
 ## Overview
 
