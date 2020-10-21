@@ -39,7 +39,10 @@ yarn create chayns-app
 This will start an interactive wizard to guide you through the creation of your
 project.
 
-Depending on wether you choose to develop a complete page or a pagemaker plugin,
+> A folder will be created in the current working directory of your terminal
+> with the name of your project.
+
+Depending on wether you choose to create a complete page or a pagemaker plugin,
 continue with the ["Developing a Custom Page"](#developing-a-custom-page) or the
 ["Developing a Pagemaker Plugin"](#developing-a-pagemaker-plugin) guides
 respectively.
@@ -49,9 +52,8 @@ respectively.
 
 ### Developing a Custom Page
 
-Since you chose the `A complete page` option, you will be creating a custom
-page. Like the output of the initial command said, you can start a local
-development server by running
+Since you chose the `A complete page` option for your project, we will be
+creating a custom page. You can start a local development server by running
 
 ```bash
 npm run dev
@@ -63,29 +65,34 @@ or
 yarn dev
 ```
 
-To develop your project in the chayns-environment, you have to create a Page on
-your chayns-Site. If you do not have one yet, create one
-[here](https://chayns.net/).
+You need to develop the project in a chayns-environment for all features to work
+properly. You have to create a Page on a chayns-Site you can manage, if you do
+not have one yet, create one [here](https://chayns.net/).
 
-After finishing the setup of your site go to Administration > Content > Pages
-and click the "Add Page" button at the top.
+After finishing the setup of your site, head to **Administration > Content >
+Pages** and click the "Add Page" button at the top.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-page.png)
 
-There you want to choose the "Include website" option. Enter a name you like
-(e.g. "Local Development") and set the source to `http://localhost:1234/`, which
-is the address your local development server will listen to.
+Choose the "Include website" option and enter a name you like (e.g. "Local
+Development"). Set the source to `http://localhost:1234/`, the address at which
+your local development server operates.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/include-website.png)
 
-Now you can open your newly created page by selecting it in the menu and see
-changes to your project in real time!
+Your freshly created page should appear in the menu. Navigate to the page by
+clicking it.
+
+**Congrats!** You are now ready to develop your custom page! Start making
+changes to your code and you should see them reflected on your Page in
+real-time.
 
 ### Developing a Pagemaker Plugin
 
-If you chose the `A pagemaker plugin` option, you will be creating a plugin for
-the Pagemaker, a powerful website editing tool. First you should start a local
-development server by running
+Since you chose the `A pagemaker plugin` option, we will be creating a plugin
+for the Pagemaker, the powerful website editing tool included in chayns.
+
+First you should start the local development server of your project by running
 
 ```bash
 npm run dev
@@ -97,64 +104,69 @@ or
 yarn dev
 ```
 
-To develop your project in the chayns-environment, you have to create a Page on
-your chayns-Site. If you do not have one yet, create one
-[here](https://chayns.net/).
+You need to develop the project in a chayns-environment for all features to work
+properly. You have to create a Page on a chayns-Site you can manage, if you do
+not have one yet, create one [here](https://chayns.net/).
 
-After finishing the setup of your site go to Administration > Content > Pages
-and click the "Add Page" button at the top.
+After finishing the setup of your site, head to **Administration > Content >
+Pages** and click the "Add Page" button at the top.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-page.png)
 
-There you want to choose the "Create a page" option. Enter a name you like (e.g.
-"Local Development") and click the button to add the page.
+Choose the "Create a page" option and enter a name you like (e.g. "Local
+Development"). Click the "Add" button to create the Page.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/create-page.png)
 
-Now you can open your newly created page by selecting it in the menu. Here we
-want to go into "admin-mode" by toggling the switch in the main menu, next to
-the name of your site.
+Your freshly created page should appear in the menu. Navigate to the page by
+clicking it. There we want to enter _"admin-mode"_ by activating the switch in
+the main menu, next to the name of your Site.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/admin-switch.png)
 
 A floating button with a big plus sign should appear in the bottom right corner.
-Click that and choose Interactive > Iframe to add an Iframe to your Page.
+Click it and choose **Interactive > Iframe** in the flyout-menu to add an iframe
+to your Page.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-iframe.png)
 
-Hover over your newly created Iframe and activate the chayns-API by clicking on
+Hover over your newly created iframe and activate the chayns-API by clicking on
 the code-symbol and confirming your choice in the dialog.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/iframe-chayns-api.png)
 
-Now we only have to set the source of the Iframe to the address of your local
+Now we have to set the iframe source (_"Quelle"_) to the address of your local
 development server by tapping on the gear-icon and entering
 `http://localhost:1234/` in the second input field.
 
 ![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-local-path.png)
 
-You are now ready to start developing and see changes to your project in real
-time!
+**Congrats!** You are now ready to develop your Pagemaker plugin! Start making
+changes to your code and you should see them reflected on your Page in
+real-time.
 
 ## FAQ
 
 ### What is the difference between an Pagemaker plugin and a complete page?
 
-A Pagemaker plugin only takes up a small spot on your Page and you can add
-regular Pagemaker elements like text, videos, graphics or other interactive
-elements before and after your Plugin, that can be easily edited by anyone,
-including non-developers.
+A Pagemaker plugin only takes up a slice of your Page and you can add regular
+Pagemaker elements like text, videos, graphics or other interactive elements
+above and below your Plugin, that can be easily edited with the MS Word-like
+interface of the Pagemaker, by anyone, including non-developers.
 
 When developing a complete page, your application will take up all the space on
-one page. This means that when you want to add simple content around your
-interactive elements you will have to do so in your application code, which will
-not be easily editable by other people, especially non-developers.
+one page. On one hand you will have slightly more space to work with, but on the
+other had this means that you cannot easily add content to this page with the
+Pagemaker. Of course you can still add headings (`<h1>`) and other elements in
+your code with HTML, but they will not be easily editable by other people,
+especially non-developers.
 
-### How can I deploy my finished app so it will be permanently available to all users on my Site?
+### How can I deploy the application so it will be permanently available to all users of my Site?
 
-The easiest way to deploy your app is to use a modern deployment platform like
-[Vercel](https://vercel.com/home) or [Netlify](https://www.netlify.com/). They
-make it very easy to deploy your application from a GitHub-repository.
+The most simple way of deploying your app is to use a cloud deployment platform
+like [Vercel](https://vercel.com/home) or [Netlify](https://www.netlify.com/).
+These services will deploy any project for you, aslong as it is managed with a
+Git repository on GitHub or similar services.
 
-If these platforms ask you for a build command, choose `chayns-toolkit build`
-and as a publish directory choose `build`.
+If these platforms ask for a build command, enter `chayns-toolkit build` and if
+they ask for a publish directory, enter `build`.
