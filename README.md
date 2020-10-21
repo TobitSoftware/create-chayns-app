@@ -25,10 +25,10 @@
 
 -   [Get Started](#get-started)
     -   [Developing a Custom Page](#developing-a-custom-page)
-    -   [Developing a Pagemaker Iframe](#developing-a-pagemaker-iframe)
+    -   [Developing a Pagemaker Plugin](#developing-a-pagemaker-plugin)
 -   [FAQ](#faq)
     -   [What is the difference between an Pagemaker plugin and a complete page?](#what-is-the-difference-between-an-pagemaker-plugin-and-a-complete-page)
-    -   [How can I deploy my finished app so it will be permanently available to all users on my Site?](#how-can-i-deploy-my-finished-app-so-it-will-be-permanently-available-to-all-users-on-my-site)
+    -   [How can I deploy the application so it will be permanently available to all users of my Site?](#how-can-i-deploy-the-application-so-it-will-be-permanently-available-to-all-users-of-my-site)
 
 ## Get Started
 
