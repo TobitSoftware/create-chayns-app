@@ -120,6 +120,7 @@ async function createChaynsApp({
             break;
         case ProjectTypes.pagemakerPlugin:
             await copyTemplate({
+                destination,
                 projectName,
                 templateDir: path.join(
                     ` ${__dirname} `.trim(),
