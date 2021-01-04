@@ -12,6 +12,7 @@ const { Command } = require('commander');
 const pkg = require('../package.json');
 const ProjectTypes = require('./projectTypes');
 const ora = require('ora');
+const toCapitalizedWords = require('./util/toCapitalizedWords');
 
 const { command } = execa;
 
@@ -93,6 +94,7 @@ async function createChaynsApp({
     function fillTemplates(content) {
         return mapReplace(content, {
             'package-name': projectName,
+            'readable-package-name': toCapitalizedWords(projectName),
             description: summary,
             'install-command':
                 usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
