@@ -2,5 +2,5 @@
 .gitignore
 .prettierrc
 assets/
-src/
+/src/
 yarn.lock
