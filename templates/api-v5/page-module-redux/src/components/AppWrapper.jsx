@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 const AppWrapper = ({ ...props }) => {
     return (
         <div className="tapp">
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <ChaynsProvider {...props}>
                 <Provider store={store}>
                     <App/>
