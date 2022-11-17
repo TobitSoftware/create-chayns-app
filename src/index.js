@@ -199,7 +199,7 @@ async function createChaynsApp({
         }
 
         // Main template
-        const templatePath = `../templates/api-v5/page${chooseTypescript === YesOrNo.Yes ? "-ts" : ""}${module ? "-module":""}${chooseRedux === YesOrNo.Yes ? "-redux" : ""}`;
+        const templatePath = `../templates/api-v5/page${chooseTypescript === YesOrNo.Yes ? "-ts" : ""}${moduleFederation ? "-module":""}${chooseRedux === YesOrNo.Yes ? "-redux" : ""}`;
         await copyTemplate({
             destination,
             projectName,
@@ -222,7 +222,7 @@ async function createChaynsApp({
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
         }
 
-        if(module) {
+        if(moduleFederation) {
             const toolkitFileName = `toolkit.config-module.js`;
             const fileDestination = path.join(destination, 'toolkit.config.js');
 
