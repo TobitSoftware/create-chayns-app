@@ -42,19 +42,23 @@ async function createChaynsApp({
     packageManager,
     moduleFederation
 }) {
-    const { projectVersion } = await prompt({
-        type: 'select',
-        name: 'projectVersion',
-        message: 'What api version do you want to use?',
-        choices: Object.values(ProjectVersions),
-    });
+    let projectVersion;
+    let projectType;
 
-    const { projectType } = await prompt({
-        type: 'select',
-        name: 'projectType',
-        message: 'What type of project do you want to create?',
-        choices: Object.values(ProjectTypes),
-    });
+    if(!moduleFederation) {
+        ({ projectVersion } = await prompt({
+            type: 'select',
+            name: 'projectVersion',
+            message: 'What api version do you want to use?',
+            choices: Object.values(ProjectVersions),
+        }));
+        ({ projectType } = await prompt({
+            type: 'select',
+            name: 'projectType',
+            message: 'What type of project do you want to create?',
+            choices: Object.values(ProjectTypes),
+        }));
+    }
 
     let validPackageName = false;
     let projectName;
