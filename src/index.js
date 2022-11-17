@@ -10,9 +10,13 @@ const mapReplace = require('./util/mapReplace');
 const execa = require('execa');
 const { Command } = require('commander');
 const pkg = require('../package.json');
-const ProjectTypes = require('./projectTypes');
+const {ProjectTypes, ProjectVersions, YesOrNo} = require('./projectTypes');
 const ora = require('ora');
 const toCapitalizedWords = require('./util/toCapitalizedWords');
+const {promisify} = require("util");
+const fs = require("fs");
+const writeFileAsync = promisify(fs.writeFile);
+const readFileAsync = promisify(fs.readFile);
 
 const { command } = execa;
 
@@ -23,6 +27,7 @@ program
     .option('-G, --no-git', 'initialize the project without a git repository')
     .option('-C, --no-initial-commit', "don't perform an initial commit")
     .option('-I, --no-install', "don't install packages after initialization")
+    .option('-M, --module-federation', "install to use as module (only internal)")
     .option(
         '-p, --package-manager <manager>',
         'specify the package manager to use (`npm` or `yarn`). Defaults to the one used to execute the command.'
@@ -35,7 +40,15 @@ async function createChaynsApp({
     initialCommit,
     install,
     packageManager,
+    moduleFederation
 }) {
+    const { projectVersion } = await prompt({
+        type: 'select',
+        name: 'projectVersion',
+        message: 'What api version do you want to use?',
+        choices: Object.values(ProjectVersions),
+    });
+
     const { projectType } = await prompt({
         type: 'select',
         name: 'projectType',
@@ -83,14 +96,6 @@ async function createChaynsApp({
         name: 'summary',
     });
 
-    console.log(
-        `\n${chalk.bold.magentaBright(
-            'Awesome!'
-        )} Please wait a quick second while we bootstrap your project...\n`
-    );
-
-    const usedPackageManager = packageManager || (isYarn ? 'yarn' : 'npm');
-
     function fillTemplates(content) {
         return mapReplace(content, {
             'package-name': projectName,
@@ -104,36 +109,125 @@ async function createChaynsApp({
 
     const destination = path.resolve(projectName);
 
-    switch (projectType) {
-        case ProjectTypes.page:
-            await copyTemplate({
-                destination,
-                templateDir: path.join(
-                    /**
-                     * Do some nasty dynamic stuff to the __dirname so the
-                     * relocate loader doesn't copy the template folder.
-                     */
-                    ` ${__dirname} `.trim(),
-                    '../templates/page'
-                ),
-                adjustContent: (content) =>
-                    mapReplace(fillTemplates(content), { 'tapp-style': '' }),
+    const usedPackageManager = packageManager || (isYarn ? 'yarn' : 'npm');
+    if(projectVersion === ProjectVersions.v4) {
+        console.log(
+            `\n${chalk.bold.magentaBright(
+                'Awesome!'
+            )} Please wait a quick second while we bootstrap your project...\n`
+        );
+
+        switch (projectType) {
+            case ProjectTypes.page:
+                await copyTemplate({
+                    destination,
+                    templateDir: path.join(
+                        /**
+                         * Do some nasty dynamic stuff to the __dirname so the
+                         * relocate loader doesn't copy the template folder.
+                         */
+                        ` ${__dirname} `.trim(),
+                        '../templates/page'
+                    ),
+                    adjustContent: (content) =>
+                        mapReplace(fillTemplates(content), { 'tapp-style': '' }),
+                });
+                break;
+            case ProjectTypes.pagemakerPlugin:
+                await copyTemplate({
+                    destination,
+                    projectName,
+                    templateDir: path.join(
+                        ` ${__dirname} `.trim(),
+                        '../templates/page'
+                    ),
+                    adjustContent: (content) =>
+                        mapReplace(fillTemplates(content), {
+                            'tapp-style': ' style="padding: 0 0 16px !important"',
+                        }),
+                });
+                break;
+        }
+    } else {
+        const { chooseRedux } = await prompt({
+            type: 'select',
+            name: 'chooseRedux',
+            message: 'Do you want to add redux-toolkit?',
+            choices: Object.values(YesOrNo),
+        });
+
+        const { chooseTypescript } = await prompt({
+            type: 'select',
+            name: 'chooseTypescript',
+            message: 'Do you want to add typescript?',
+            choices: Object.values(YesOrNo),
+        });
+
+        const getTemplatePath = (temp) =>  path.join(` ${__dirname} `.trim(), temp)
+        const copyFile = async (from, to, map) => {
+            let content = await readFileAsync(from, { encoding: 'utf-8' });
+            if(map) {
+                content = mapReplace(content, {
+                    'package-name': projectName,
+                    'readable-package-name': toCapitalizedWords(projectName),
+                    description: summary,
+                    'install-command':
+                        usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
+                    'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run',
+                })
+            }
+            await writeFileAsync(to, content);
+        }
+
+        const handleReplace = (content) => {
+           return mapReplace(fillTemplates(content), {
+                'tapp-style': projectType === ProjectTypes.pagemakerPlugin ? ' style="padding: 0 0 16px !important"' : '',
             });
-            break;
-        case ProjectTypes.pagemakerPlugin:
+        }
+
+        // redux modules
+        if(chooseRedux === YesOrNo.Yes) {
+            const templateSharedPath = `../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}/src`;
             await copyTemplate({
-                destination,
+                destination: destination + "/src",
                 projectName,
                 templateDir: path.join(
                     ` ${__dirname} `.trim(),
-                    '../templates/page'
-                ),
-                adjustContent: (content) =>
-                    mapReplace(fillTemplates(content), {
-                        'tapp-style': ' style="padding: 0 0 16px !important"',
-                    }),
+                    templateSharedPath
+                )
             });
-            break;
+        }
+
+        // Main template
+        const templatePath = `../templates/api-v5/page${chooseTypescript === YesOrNo.Yes ? "-ts" : ""}${module ? "-module":""}${chooseRedux === YesOrNo.Yes ? "-redux" : ""}`;
+        await copyTemplate({
+            destination,
+            projectName,
+            templateDir: getTemplatePath(templatePath),
+            adjustContent: handleReplace
+        });
+
+        // copy package json
+        const packageJsonDestination = path.join(destination, 'package.json');
+        await copyFile(getTemplatePath(`../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? "ts" : "js"}/template-package${chooseRedux === YesOrNo.Yes ? "-redux" : ""}.json`), packageJsonDestination, true);
+
+        // copy README
+        await copyFile(getTemplatePath(`../templates/shared/README.md`),  path.join(destination, 'README.md'), true);
+
+        // copy gitignore
+        await copyFile(getTemplatePath(`../templates/shared/template-gitignore`),  path.join(destination, '.gitignore'), true);
+
+        // copy tsconfig.json
+        if(chooseTypescript === YesOrNo.Yes) {
+            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
+        }
+
+        if(module) {
+            const toolkitFileName = `toolkit.config-module.js`;
+            const fileDestination = path.join(destination, 'toolkit.config.js');
+
+            await copyFile(getTemplatePath(`../templates/api-v5/shared/${toolkitFileName}`), fileDestination);
+        }
     }
 
     if (git) {
