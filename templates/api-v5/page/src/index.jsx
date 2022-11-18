@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ChaynsProvider } from "chayns-api";
+import { ChaynsProvider } from 'chayns-api';
 
 import App from './components/App';
 

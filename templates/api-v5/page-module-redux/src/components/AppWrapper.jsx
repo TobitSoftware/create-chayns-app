@@ -1,8 +1,8 @@
 import React from 'react';
-import { ChaynsProvider, withCompatMode } from "chayns-api";
-import App from "./App";
+import { ChaynsProvider, withCompatMode } from 'chayns-api';
+import App from './App';
 import store from '../redux-modules';
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux';
 
 const AppWrapper = ({ ...props }) => {
     return (

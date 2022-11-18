@@ -1,3 +1,3 @@
-import { counterSliceName } from "./counterSlice";
+import { counterSliceName } from './counterSlice';
 
 export const selectCount = (state) => state[counterSliceName].value;

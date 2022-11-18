@@ -1,8 +1,8 @@
 import React from 'react';
-import { WaitUntil } from "chayns-api";
-import { SmallWaitCursor } from "chayns-components";
-import { useSelector } from "react-redux";
-import { selectCount } from "../redux-modules/counter/counterSelectors";
+import { WaitUntil } from 'chayns-api';
+import { SmallWaitCursor } from 'chayns-components';
+import { useSelector } from 'react-redux';
+import { selectCount } from '../redux-modules/counter/counterSelectors';
 
 const App = () => {
     const counter = useSelector(selectCount);

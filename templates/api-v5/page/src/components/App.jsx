@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSite } from "chayns-api";
+import { useSite } from 'chayns-api';
 
 const App = () => {
     const { title } = useSite();

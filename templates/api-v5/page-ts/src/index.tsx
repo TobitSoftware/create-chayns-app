@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { ChaynsProvider } from 'chayns-api';
 import App from './components/App';
 
+// @ts-expect-error chayns-js api has no types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
 chayns.ready
     .then(() => {
         try {

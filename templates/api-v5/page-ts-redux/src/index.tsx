@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AppWrapper from './components/AppWrapper';
 
+// @ts-expect-error chayns-js api has no types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
 chayns.ready
     .then(() => {
         try {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { WaitUntil } from "chayns-api";
-import { SmallWaitCursor } from "chayns-components";
+import { WaitUntil } from 'chayns-api';
+import { SmallWaitCursor } from 'chayns-components';
 import './app.scss';
 
 const App = () => {

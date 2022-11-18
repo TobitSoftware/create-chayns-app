@@ -1,6 +1,6 @@
 import React from 'react';
-import { ChaynsProvider, withCompatMode } from "chayns-api";
-import App from "./App";
+import { ChaynsProvider, withCompatMode } from 'chayns-api';
+import App from './App';
 
 const AppWrapper = ({ ...props }) => {
     return (
