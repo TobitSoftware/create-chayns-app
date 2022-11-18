@@ -1,6 +1,6 @@
 {
     "name": "create-chayns-app",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "private": false,
     "description": "Create a new chayns® development project in one command.",
     "keywords": [
@@ -34,19 +34,21 @@
         "start": "node src/index.js"
     },
     "devDependencies": {
-        "@vercel/ncc": "^0.28.2",
-        "chalk": "^4.1.0",
-        "commander": "^7.2.0",
+        "@reduxjs/toolkit": "^1.9.0",
+        "@vercel/ncc": "^0.34.0",
+        "chalk": "4.1.2",
+        "commander": "^9.4.1",
         "enquirer": "^2.3.6",
-        "eslint": "^7.24.0",
-        "execa": "^5.0.0",
-        "fast-glob": "^3.2.5",
-        "is-npm": "^5.0.0",
+        "eslint": "^8.27.0",
+        "execa": "5.1.1",
+        "fast-glob": "^3.2.12",
+        "is-npm": "5.0.0",
         "mkdirp": "^1.0.4",
-        "ora": "^5.4.0",
-        "prettier": "^2.2.1",
-        "prettier-plugin-packagejson": "^2.2.10",
-        "validate-npm-package-name": "^3.0.0"
+        "ora": "5.4.1",
+        "prettier": "^2.7.1",
+        "prettier-plugin-packagejson": "^2.3.0",
+        "react-redux": "^8.0.5",
+        "validate-npm-package-name": "^5.0.0"
     },
     "publishConfig": {
         "access": "public"

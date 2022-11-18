@@ -25,6 +25,7 @@ module.exports = async function copyTemplate({
 
         const realFileName = filename
             .replace('template-gitignore', '.gitignore')
+            .replace('template-package-redux.json', 'package.json')
             .replace('template-package.json', 'package.json');
 
         const fileDestination = path.join(destination, realFileName);
