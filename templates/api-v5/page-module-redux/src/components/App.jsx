@@ -10,25 +10,23 @@ const App = () => {
     const taskList = [
         // tasks on first level are executed parallel
         () => chayns.ready,
-        () => new Promise((resolve) => setTimeout(resolve, 1000)), // Add your initial Requests, textstrings here
-
+        () => new Promise((resolve) => {setTimeout(resolve, 1000)}), // Add your initial Requests, textstrings here
         [
             // tasks in second level are executed one after another
         ]
     ]
 
-    return (<WaitUntil
-        tasks={taskList}
-        loadingComponent={(
-            <div style={{ textAlign: 'center' }}>
-                <SmallWaitCursor show/>
-            </div>
-        )}
-    >
-        <h1>Hi! Welcome to your newly created chayns application!
-            ${counter}
-        </h1>
-    </WaitUntil>);
+    return (<div className="{{ package-name-underscore }}">
+        <WaitUntil
+            tasks={taskList}
+            loadingComponent={(
+                <div style={{ textAlign: 'center' }}>
+                    <SmallWaitCursor show/>
+                </div>
+            )}
+        >
+            <h1>Hi! Welcome to your newly created chayns application! {counter}</h1>
+        </WaitUntil></div>);
 };
 
 export default App;

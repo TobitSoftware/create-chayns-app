@@ -108,6 +108,7 @@ async function createChaynsApp({
             'install-command':
                 usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
             'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run',
+            'package-name-underscore': projectName.replace('-', '_')
         });
     }
 
@@ -177,7 +178,7 @@ async function createChaynsApp({
                     description: summary,
                     'install-command':
                         usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
-                    'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run',
+                    'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run'
                 })
             }
             await writeFileAsync(to, content);
