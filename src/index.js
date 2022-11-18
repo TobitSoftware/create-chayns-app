@@ -201,6 +201,7 @@ async function createChaynsApp({
                     templateSharedPath
                 )
             });
+            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/.eslintrc`), path.join(destination, '.eslintrc'));
         }
 
         // Main template
