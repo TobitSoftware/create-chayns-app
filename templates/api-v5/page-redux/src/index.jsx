@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import AppWrapper from './components/AppWrapper';
 
 chayns.ready
     .then(() => {
         try {
-            ReactDOM.render(<AppWrapper/>, document.querySelector('#root'));
+            const root = createRoot(document.querySelector('#root'));
+            root.render(<AppWrapper/>);
         } catch (e) {
             console.error('Encountered error at `ReactDOM.render`: ', e);
         }

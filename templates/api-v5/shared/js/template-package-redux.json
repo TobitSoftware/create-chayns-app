@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "{{ description }}",
-  "keywords": ["chayns", "chayns-toolkit", "react"],
+  "keywords": [
+    "chayns",
+    "chayns-toolkit",
+    "react"
+  ],
   "scripts": {
     "build": "chayns-toolkit build",
     "dev": "chayns-toolkit dev",
@@ -20,17 +24,17 @@
     "extends": "@chayns-toolkit"
   },
   "dependencies": {
-    "chayns-components": "^4.24.25",
+    "chayns-components": "^4.29.3",
     "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "chayns-api": "^1.0.0",
-    "react-redux": "^8.0.4",
-    "@reduxjs/toolkit": "^1.8.6"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "chayns-api": "^1.0.20",
+    "react-redux": "^8.0.5",
+    "@reduxjs/toolkit": "^1.9.5"
   },
   "devDependencies": {
-    "chayns-toolkit": "^2.0.0",
-    "prettier": "^2.7.1",
-    "prettier-plugin-packagejson": "^2.3.0"
+    "chayns-toolkit": "^2.0.7",
+    "prettier": "^2.8.8",
+    "prettier-plugin-packagejson": "^2.4.3"
   }
 }

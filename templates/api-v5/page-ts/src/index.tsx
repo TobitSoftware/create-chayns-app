@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { ChaynsProvider } from 'chayns-api';
 import App from './components/App';
 
@@ -8,7 +8,8 @@ import App from './components/App';
 chayns.ready
     .then(() => {
         try {
-            ReactDOM.render(<ChaynsProvider><App /></ChaynsProvider>, document.querySelector('#root'));
+            const root = createRoot(document.querySelector('#root'));
+            root.render(<ChaynsProvider><App /></ChaynsProvider>);
         } catch (e) {
             console.error('Encountered error at `ReactDOM.render`: ', e);
         }

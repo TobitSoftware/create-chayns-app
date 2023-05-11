@@ -20,18 +20,18 @@
         "extends": "@chayns-toolkit"
     },
     "dependencies": {
-        "chayns-components": "^4.24.25",
-        "prop-types": "^15.8.1",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "chayns-api": "^1.0.0"
+      "chayns-components": "^4.29.3",
+      "prop-types": "^15.8.1",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "chayns-api": "^1.0.20"
     },
     "devDependencies": {
-        "chayns-toolkit": "^2.0.0",
-        "prettier": "^2.7.1",
-        "prettier-plugin-packagejson": "^2.3.0",
-        "typescript": "^4.8.4",
-        "@types/react": "17.0.52",
-        "@types/react-dom": "17.0.18"
+      "chayns-toolkit": "^2.0.7",
+      "prettier": "^2.8.8",
+      "prettier-plugin-packagejson": "^2.4.3",
+      "typescript": "^5.0.4",
+      "@types/react": "^18.2.6",
+      "@types/react-dom": "^18.2.4"
     }
 }
