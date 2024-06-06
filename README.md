@@ -35,7 +35,7 @@
 To bootstrap a new chayns® project, simply run
 
 ```bash
-npx create-chayns-app
+npx create-chayns-app@latest
 ```
 
 or
