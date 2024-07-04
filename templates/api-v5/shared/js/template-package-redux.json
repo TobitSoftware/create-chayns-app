@@ -24,7 +24,7 @@
     "extends": "@chayns-toolkit"
   },
   "dependencies": {
-    "chayns-components": "^4.29.3",
+    "@chayns-components/core": "^5.0.0-beta.679",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,7 +33,7 @@
     "@reduxjs/toolkit": "^1.9.5"
   },
   "devDependencies": {
-    "chayns-toolkit": "^2.0.8",
+    "chayns-toolkit": "^2.0.9",
     "prettier": "^2.8.8",
     "prettier-plugin-packagejson": "^2.4.3"
   }
