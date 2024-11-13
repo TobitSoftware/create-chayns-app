@@ -18,7 +18,7 @@ const fs = require("fs");
 const writeFileAsync = promisify(fs.writeFile);
 const readFileAsync = promisify(fs.readFile);
 
-const { command } = execa;
+const execaCommand = execa.command;
 
 const program = new Command();
 
@@ -228,20 +228,22 @@ async function createChaynsApp({
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
         }
 
+        const fileDestination = path.join(destination, 'toolkit.config.js');
         if(moduleFederation) {
             const toolkitFileName = `toolkit.config-module.js`;
-            const fileDestination = path.join(destination, 'toolkit.config.js');
-
             await copyFile(getTemplatePath(`../templates/api-v5/shared/${toolkitFileName}`), fileDestination);
+        } else {
+            await copyFile(getTemplatePath(`../templates/api-v5/shared/toolkit.config.js`), fileDestination);
         }
     }
 
     if (git) {
         const spinner = ora('Initializing Git repository').start();
         try {
-            await command('git init', { cwd: destination });
+            await execaCommand('git init', { cwd: destination });
             spinner.succeed('Initialized a Git repository');
-        } catch {
+        } catch(e) {
+            throw e;
             spinner.fail(
                 `Failed to initialize a Git repository. You can do this yourself by running ${chalk.cyanBright(
                     `git init`
@@ -255,7 +257,7 @@ async function createChaynsApp({
             `Installing packages using ${chalk.blueBright(usedPackageManager)}`
         ).start();
         try {
-            await command(`${usedPackageManager} install`, {
+            await execaCommand(`${usedPackageManager} install`, {
                 cwd: destination,
             });
             spinner.succeed(
@@ -277,7 +279,7 @@ async function createChaynsApp({
     if (git && initialCommit) {
         const spinner = ora('Performing an initial commit').start();
         try {
-            await command('git add .', { cwd: destination });
+            await execaCommand('git add .', { cwd: destination });
             await execa('git', ['commit', '-m', ':tada: Initial commit'], {
                 cwd: destination,
             });
