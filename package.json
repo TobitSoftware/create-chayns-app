@@ -30,7 +30,7 @@
     "scripts": {
         "build": "ncc build src/index.js -o dist -m",
         "format": "prettier . --ignore-path .gitignore --write",
-        "prepublishOnly": "yarn build",
+        "prepublishOnly": "npm run build",
         "start": "node src/index.js"
     },
     "devDependencies": {
