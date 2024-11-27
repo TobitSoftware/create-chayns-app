@@ -223,6 +223,11 @@ async function createChaynsApp({
         // copy gitignore
         await copyFile(getTemplatePath(`../templates/shared/template-gitignore`),  path.join(destination, '.gitignore'), true);
 
+        await copyFile(getTemplatePath(`../templates/api-v5/shared/.env`), path.join(destination, '.env'));
+        await copyFile(getTemplatePath(`../templates/api-v5/shared/.env.development.local`), path.join(destination, '.env.development.local'));
+
+        await copyFile(getTemplatePath(`../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}/src/constants/server-urls.${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}`), path.join(destination, `/src/constants/server-urls.${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}`));
+
         // copy tsconfig.json
         if(chooseTypescript === YesOrNo.Yes) {
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
