@@ -226,6 +226,10 @@ async function createChaynsApp({
         await copyFile(getTemplatePath(`../templates/api-v5/shared/.env`), path.join(destination, '.env'));
         await copyFile(getTemplatePath(`../templates/api-v5/shared/.env.development.local`), path.join(destination, '.env.development.local'));
 
+        if (!fs.existsSync(path.join(destination, '/src/constants'))) {
+            fs.mkdirSync(path.join(destination, '/src/constants'));
+        }
+
         await copyFile(getTemplatePath(`../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}/src/constants/server-urls.${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}`), path.join(destination, `/src/constants/server-urls.${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}`));
 
         // copy tsconfig.json
