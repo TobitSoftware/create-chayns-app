@@ -235,6 +235,11 @@ async function createChaynsApp({
         // copy tsconfig.json
         if(chooseTypescript === YesOrNo.Yes) {
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
+
+            if (!fs.existsSync(path.join(destination, '/src/types'))) {
+                fs.mkdirSync(path.join(destination, '/src/types'));
+            }
+            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/global.d.ts`), path.join(destination, '/src/types/global.d.ts'));
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');
