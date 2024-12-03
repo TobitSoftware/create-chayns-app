@@ -240,6 +240,7 @@ async function createChaynsApp({
                 fs.mkdirSync(path.join(destination, '/src/types'));
             }
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/global.d.ts`), path.join(destination, '/src/types/global.d.ts'));
+            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/environment.d.ts`), path.join(destination, '/src/types/environment.d.ts'));
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');
