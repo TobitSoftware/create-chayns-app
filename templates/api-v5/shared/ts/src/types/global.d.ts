@@ -14,7 +14,10 @@ declare module '*.svg?url' {
 }
 
 interface ImportMetaEnv {
-    [key: string]: string
+    PUBLIC_BUILD_ENV: string;
+    PUBLIC_BUILD_VERSION: string;
+
+    /* add custom env variables here */
 }
 
 interface ImportMeta {
