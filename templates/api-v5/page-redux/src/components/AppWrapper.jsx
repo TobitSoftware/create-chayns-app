@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ChaynsProvider } from 'chayns-api';
+import { PageProvider } from '@chayns-components/core';
 import store from '../redux-modules';
 import App from './App';
 
@@ -8,7 +9,9 @@ const AppWrapper = () => {
     return (
         <ChaynsProvider>
             <Provider store={store}>
-                <App />
+                <PageProvider>
+                    <App />
+                </PageProvider>
             </Provider>
         </ChaynsProvider>
     )

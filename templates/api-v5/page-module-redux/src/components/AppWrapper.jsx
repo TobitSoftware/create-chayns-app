@@ -1,19 +1,20 @@
 import React from 'react';
 import { ChaynsProvider, withCompatMode } from 'chayns-api';
+import { PageProvider } from '@chayns-components/core';
 import App from './App';
 import store from '../redux-modules';
 import { Provider } from 'react-redux';
 
 const AppWrapper = ({ ...props }) => {
     return (
-        <div className="tapp">
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <ChaynsProvider {...props}>
-                <Provider store={store}>
+        /* eslint-disable-next-line react/jsx-props-no-spreading */
+        <ChaynsProvider {...props}>
+            <Provider store={store}>
+                <PageProvider>
                     <App/>
-                </Provider>
-            </ChaynsProvider>
-        </div>
+                </PageProvider>
+            </Provider>
+        </ChaynsProvider>
     )
 }
 
