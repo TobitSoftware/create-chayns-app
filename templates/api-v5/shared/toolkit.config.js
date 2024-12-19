@@ -10,6 +10,7 @@ module.exports = {
                 pathHtml: './src/index.html',
             },
             // Add more entrypoints here
-        }
+        },
+        cssVersion: '5.0'
     },
 }
