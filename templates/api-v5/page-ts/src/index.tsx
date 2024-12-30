@@ -1,12 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ChaynsProvider } from 'chayns-api';
-import { PageProvider } from '@chayns-components/core';
-import App from './components/App';
+import AppWrapper from './components/AppWrapper';
 
 try {
-    const root = createRoot(document.querySelector('#root'));
-    root.render(<ChaynsProvider><PageProvider><App /></PageProvider></ChaynsProvider>);
+    const root = createRoot(document.querySelector('#root') as Element);
+    root.render(<AppWrapper/>);
 } catch (e) {
     console.error('Encountered error at `ReactDOM.render`: ', e);
 }
