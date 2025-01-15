@@ -1,4 +1,6 @@
-module.exports = {
+const { buildToolkitConfig } = require('chayns-toolkit');
+
+module.exports = buildToolkitConfig({
     development: {
         host: '0.0.0.0',
         port: process.env.PORT || 8080,
@@ -8,4 +10,4 @@ module.exports = {
             './AppWrapper': './src/components/AppWrapper'
         },
     },
-}
+})
