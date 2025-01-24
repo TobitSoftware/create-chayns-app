@@ -3,19 +3,19 @@
 import { prompt } from 'enquirer';
 import validate from 'validate-npm-package-name';
 import chalk from 'chalk';
-import copyTemplate from './copyTemplate';
 import path from 'path';
 import { isYarn } from 'is-npm';
-import mapReplace from './util/mapReplace';
 import execa, { command as execaCommand } from 'execa';
 import { Command } from 'commander';
-import { version } from '../package.json';
-import { ProjectTypes, ProjectVersions, YesOrNoChoices } from './projectTypes';
 import ora from 'ora';
-import toCapitalizedWords from './util/toCapitalizedWords';
 import fs from "fs";
 import { writeFile as writeFileAsync, readFile as readFileAsync } from 'fs/promises';
+import { version } from '../package.json';
+import { ProjectTypes, ProjectVersions, YesOrNoChoices } from './constants/projectTypes';
+import copyTemplate from './util/copyTemplate';
+import mapReplace from './util/mapReplace';
 import { createPackageJson } from './util/packageJson';
+import toCapitalizedWords from './util/toCapitalizedWords';
 
 const program = new Command();
 
