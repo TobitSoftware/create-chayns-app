@@ -61,7 +61,6 @@ async function createChaynsApp({
     let projectName;
 
     while (!validPackageName) {
-        // eslint-disable-next-line no-await-in-loop
         const { packageName } = await prompt([
             {
                 type: 'input',
