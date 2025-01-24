@@ -1,29 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WaitUntil } from 'chayns-api';
 import { SmallWaitCursor } from '@chayns-components/core';
 import './app.scss';
 
 const App = () => {
-
-    const taskList = [
-        // tasks in first level are executed one after another
-        () => new Promise((resolve) => {setTimeout(resolve, 1000)}), // Add your initial Requests, textstrings here
+    const [taskList] = useState(() => [
+        // first level tasks are executed one after the other
+        () => new Promise((resolve) => { setTimeout(resolve, 1000) }), // Add your initial Requests, textstrings here
         [
-            // tasks on second level are executed parallel
+            // second level tasks are executed in parallel
         ]
-    ]
+    ]);
 
-    return (<div className="{{ package-name-underscore }}">
+    return (
         <WaitUntil
             tasks={taskList}
             loadingComponent={(
-                <div style={{ textAlign: 'center' }}>
-                    <SmallWaitCursor/>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <SmallWaitCursor />
                 </div>
             )}
-    >
-        <h1>Hi! Welcome to your newly created chayns application!</h1>
-    </WaitUntil></div>);
+        >
+            <h1>Hi! Welcome to your newly created chayns application!</h1>
+        </WaitUntil>
+    );
 };
 
 export default App;

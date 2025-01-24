@@ -9,5 +9,7 @@ module.exports = buildToolkitConfig({
         exposeModules: {
             './AppWrapper': './src/components/AppWrapper'
         },
+        cssVersion: '5.0',
+        prefixCss: true,
     },
 })

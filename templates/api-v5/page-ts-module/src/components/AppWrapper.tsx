@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { FC, ComponentProps } from 'react';
 import { ChaynsProvider, withCompatMode } from 'chayns-api';
 import { PageProvider } from '@chayns-components/core';
 import App from './App';
 
-const AppWrapper = ({ ...props }) => {
-    return (
-        /* eslint-disable-next-line react/jsx-props-no-spreading */
+const AppWrapper: FC<ComponentProps<typeof ChaynsProvider>> = (props) => (
+    <div className="{{ package-name-underscore }}">
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <ChaynsProvider {...props}>
             <PageProvider>
-                <App/>
+                <App />
             </PageProvider>
         </ChaynsProvider>
-    )
-}
+    </div>
+);
 
 export default withCompatMode(AppWrapper);

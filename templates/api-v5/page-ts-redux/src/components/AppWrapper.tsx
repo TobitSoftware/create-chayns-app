@@ -5,16 +5,14 @@ import { PageProvider } from '@chayns-components/core';
 import App from './App';
 import store from '../redux-modules';
 
-const AppWrapper = () => {
-    return (
-        <ChaynsProvider>
-            <Provider store={store}>
-                <PageProvider>
-                    <App/>
-                </PageProvider>
-            </Provider>
-        </ChaynsProvider>
-    )
-}
+const AppWrapper = () => (
+    <ChaynsProvider>
+        <Provider store={store}>
+            <PageProvider>
+                <App />
+            </PageProvider>
+        </Provider>
+    </ChaynsProvider>
+);
 
 export default AppWrapper;
