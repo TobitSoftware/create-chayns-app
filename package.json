@@ -27,6 +27,7 @@
     "bin": {
         "create-chayns-app": "dist/index.js"
     },
+    "files": ["dist", "templates"],
     "scripts": {
         "build": "ncc build src/index.js -o dist -m",
         "format": "prettier . --ignore-path .gitignore --write",

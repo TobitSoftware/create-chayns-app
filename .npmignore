@@ -1,6 +1,0 @@
-.eslintrc.json
-.gitignore
-.prettierrc
-assets/
-/src/
-yarn.lock
