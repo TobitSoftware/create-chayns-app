@@ -1,29 +1,25 @@
 #! /usr/bin/env node
 
-const { prompt } = require('enquirer');
-const validate = require('validate-npm-package-name');
-const chalk = require('chalk');
-const copyTemplate = require('./copyTemplate');
-const path = require('path');
-const { isYarn } = require('is-npm');
-const mapReplace = require('./util/mapReplace');
-const execa = require('execa');
-const { Command } = require('commander');
-const pkg = require('../package.json');
-const {ProjectTypes, ProjectVersions, YesOrNoChoices} = require('./projectTypes');
-const ora = require('ora');
-const toCapitalizedWords = require('./util/toCapitalizedWords');
-const {promisify} = require("util");
-const fs = require("fs");
-const writeFileAsync = promisify(fs.writeFile);
-const readFileAsync = promisify(fs.readFile);
-
-const execaCommand = execa.command;
+import { prompt } from 'enquirer';
+import validate from 'validate-npm-package-name';
+import chalk from 'chalk';
+import copyTemplate from './copyTemplate';
+import path from 'path';
+import { isYarn } from 'is-npm';
+import mapReplace from './util/mapReplace';
+import execa, { command as execaCommand } from 'execa';
+import { Command } from 'commander';
+import { version } from '../package.json';
+import { ProjectTypes, ProjectVersions, YesOrNoChoices } from './projectTypes';
+import ora from 'ora';
+import toCapitalizedWords from './util/toCapitalizedWords';
+import fs from "fs";
+import { writeFile as writeFileAsync, readFile as readFileAsync } from 'fs/promises';
 
 const program = new Command();
 
 program
-    .version(pkg.version)
+    .version(version)
     .option('-G, --no-git', 'initialize the project without a git repository')
     .option('-C, --no-initial-commit', "don't perform an initial commit")
     .option('-I, --no-install', "don't install packages after initialization")

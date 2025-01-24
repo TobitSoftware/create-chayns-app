@@ -1,4 +1,4 @@
-module.exports = function toCapitalizedWords(name) {
+export default function toCapitalizedWords(name) {
     var words = name.match(/[A-Za-z][a-z]*/g) || [];
 
     return words.map(capitalize).join(' ');
