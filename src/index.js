@@ -15,6 +15,7 @@ import ora from 'ora';
 import toCapitalizedWords from './util/toCapitalizedWords';
 import fs from "fs";
 import { writeFile as writeFileAsync, readFile as readFileAsync } from 'fs/promises';
+import { createPackageJson } from './util/packageJson';
 
 const program = new Command();
 
@@ -149,7 +150,23 @@ async function createChaynsApp({
                 });
                 break;
         }
+        await createPackageJson({
+            name: projectName,
+            description: summary,
+            destination,
+            projectVersion,
+        });
     } else {
+        const { reactVersion } = await prompt({
+            type: 'select',
+            name: 'reactVersion',
+            message: 'Which react version do you want to use?',
+            choices: [{ name: 'v18', value: 18 }, { name: 'v19', value: 19 }],
+            result (selected) {
+                return this.map(selected)[selected];
+            }
+        });
+
         const { useRedux } = await prompt({
             type: 'select',
             name: 'useRedux',
@@ -217,9 +234,16 @@ async function createChaynsApp({
             adjustContent: handleReplace
         });
 
-        // copy package json
-        const packageJsonDestination = path.join(destination, 'package.json');
-        await copyFile(getTemplatePath(`../templates/api-v5/shared/${useTypescript ? "ts" : "js"}/template-package${useRedux ? "-redux" : ""}.json`), packageJsonDestination, true);
+        // create package json
+        await createPackageJson({
+            name: projectName,
+            description: summary,
+            destination,
+            projectVersion,
+            reactVersion,
+            useRedux,
+            useTypescript,
+        });
 
         // copy README
         await copyFile(getTemplatePath(`../templates/shared/README.md`),  path.join(destination, 'README.md'), true);
