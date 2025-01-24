@@ -1,4 +1,4 @@
-import { reduxDeps, getTypescriptDevDeps, v4Deps, v4DevDeps, getV5Deps, v5DevDeps } from "../constants/dependencies";
+import { reduxDeps, getTypescriptDevDeps, v4Deps, v4DevDeps, getV5Deps, v5DevDeps, testDevDeps } from "../constants/dependencies";
 import { ProjectVersions } from "../projectTypes";
 import { resolvePackageVersion } from "./resolvePackageVersion";
 import path from "path";
@@ -30,7 +30,7 @@ const createBaseConfig = (name, description) => ({
     devDependencies: {}
 })
 
-export const buildPackageJson = async ({ name, description = '', devDependencies = {}, dependencies = {}, useTypescript }) => {
+export const buildPackageJson = async ({ name, description = '', devDependencies = {}, dependencies = {}, useTypescript, useVitest }) => {
     const config = createBaseConfig(name, description);
 
     for (let [k, v] of Object.entries(devDependencies).sort(([a], [b]) => a.localeCompare(b))) {
@@ -45,10 +45,15 @@ export const buildPackageJson = async ({ name, description = '', devDependencies
         config.scripts['check-types'] = 'tsc';
     }
 
+    if (useVitest) {
+        config.scripts.test = 'vitest';
+    }
+
     return JSON.stringify(config, undefined, 4);
 }
 
-export const createPackageJson = async ({ destination, projectVersion, reactVersion, useTypescript, useRedux, ...options }) => {
+export const createPackageJson = async ({ destination, projectVersion, reactVersion, useRedux, ...options }) => {
+    const { useTypescript, useVitest } = options;
     const spinner = ora(`Resolving latest versions of required dependencies`).start();
     let content;
     const packageJsonDestination = path.join(destination, 'package.json');
@@ -67,7 +72,10 @@ export const createPackageJson = async ({ destination, projectVersion, reactVers
         if (useTypescript) {
             Object.assign(devDependencies, getTypescriptDevDeps(reactVersion));
         }
-        content = await buildPackageJson({ ...options, dependencies, devDependencies, useTypescript });
+        if (useVitest) {
+            Object.assign(devDependencies, testDevDeps);
+        }
+        content = await buildPackageJson({ ...options, dependencies, devDependencies });
     }
     spinner.succeed('Resolved latest versions of required dependencies');
 

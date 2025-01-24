@@ -187,6 +187,16 @@ async function createChaynsApp({
             },
         });
 
+        const { useVitest } = await prompt({
+            type: 'select',
+            name: 'useVitest',
+            message: 'Do you want to add vitest?',
+            choices: YesOrNoChoices,
+            result (selected) {
+                return this.map(selected)[selected];
+            },
+        });
+
         const getTemplatePath = (temp) =>  path.join(` ${__dirname} `.trim(), temp)
         const copyFile = async (from, to, map) => {
             let content = await readFileAsync(from, { encoding: 'utf-8' });
@@ -243,6 +253,7 @@ async function createChaynsApp({
             reactVersion,
             useRedux,
             useTypescript,
+            useVitest,
         });
 
         // copy README
@@ -269,6 +280,14 @@ async function createChaynsApp({
             }
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/global.d.ts`), path.join(destination, '/src/types/global.d.ts'));
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/environment.d.ts`), path.join(destination, '/src/types/environment.d.ts'));
+        }
+
+        if (useVitest) {
+            if (!fs.existsSync(path.join(destination, '/tests'))) {
+                fs.mkdirSync(path.join(destination, '/tests'));
+            }
+            await copyFile(getTemplatePath('../templates/shared/tests/setup.js'), path.join(destination, '/tests/setup.js'));
+            await copyFile(getTemplatePath(`../templates/shared/vitest.config.mjs`), path.join(destination, `/vitest.config.m${extension}`));
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');

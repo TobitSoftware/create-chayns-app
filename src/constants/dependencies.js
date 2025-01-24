@@ -35,3 +35,13 @@ export const getTypescriptDevDeps = (reactVersion) => ({
     "@types/react": String(reactVersion),
     "@types/react-dom": String(reactVersion),
 });
+
+export const testDevDeps = {
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/user-event": "latest",
+    "@vitejs/plugin-react": "latest",
+    "@vitest/coverage-v8": "latest",
+    "jsdom": "latest",
+    "vitest": "latest",
+};
