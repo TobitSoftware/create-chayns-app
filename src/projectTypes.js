@@ -8,13 +8,13 @@ const ProjectVersions = {
     'v5': 'v5 (React api (new))'
 }
 
-const YesOrNo = {
-    'Yes': 'Yes',
-    'No': 'No'
-}
+const YesOrNoChoices = [
+    { name: 'Yes', value: true },
+    { name: 'No', value: false }
+];
 
 module.exports = {
     ProjectTypes,
     ProjectVersions,
-    YesOrNo
+    YesOrNoChoices,
 };

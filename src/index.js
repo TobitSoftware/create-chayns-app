@@ -10,7 +10,7 @@ const mapReplace = require('./util/mapReplace');
 const execa = require('execa');
 const { Command } = require('commander');
 const pkg = require('../package.json');
-const {ProjectTypes, ProjectVersions, YesOrNo} = require('./projectTypes');
+const {ProjectTypes, ProjectVersions, YesOrNoChoices} = require('./projectTypes');
 const ora = require('ora');
 const toCapitalizedWords = require('./util/toCapitalizedWords');
 const {promisify} = require("util");
@@ -154,18 +154,24 @@ async function createChaynsApp({
                 break;
         }
     } else {
-        const { chooseRedux } = await prompt({
+        const { useRedux } = await prompt({
             type: 'select',
-            name: 'chooseRedux',
+            name: 'useRedux',
             message: 'Do you want to add redux-toolkit?',
-            choices: Object.values(YesOrNo),
+            choices: YesOrNoChoices,
+            result (selected) {
+                return this.map(selected)[selected];
+            },
         });
 
-        const { chooseTypescript } = await prompt({
+        const { useTypescript } = await prompt({
             type: 'select',
-            name: 'chooseTypescript',
+            name: 'useTypescript',
             message: 'Do you want to add typescript?',
-            choices: Object.values(YesOrNo),
+            choices: YesOrNoChoices,
+            result (selected) {
+                return this.map(selected)[selected];
+            },
         });
 
         const getTemplatePath = (temp) =>  path.join(` ${__dirname} `.trim(), temp)
@@ -190,9 +196,11 @@ async function createChaynsApp({
             });
         }
 
+        const extension = useTypescript ? 'ts' : 'js';
+
         // redux modules
-        if(chooseRedux === YesOrNo.Yes) {
-            const templateSharedPath = `../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}/src`;
+        if(useRedux) {
+            const templateSharedPath = `../templates/api-v5/shared/${extension}/src`;
             await copyTemplate({
                 destination: destination + "/src",
                 projectName,
@@ -205,7 +213,7 @@ async function createChaynsApp({
         }
 
         // Main template
-        const templatePath = `../templates/api-v5/page${chooseTypescript === YesOrNo.Yes ? "-ts" : ""}${moduleFederation ? "-module":""}${chooseRedux === YesOrNo.Yes ? "-redux" : ""}`;
+        const templatePath = `../templates/api-v5/page${useTypescript ? "-ts" : ""}${moduleFederation ? "-module":""}${useRedux ? "-redux" : ""}`;
         await copyTemplate({
             destination,
             projectName,
@@ -215,7 +223,7 @@ async function createChaynsApp({
 
         // copy package json
         const packageJsonDestination = path.join(destination, 'package.json');
-        await copyFile(getTemplatePath(`../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? "ts" : "js"}/template-package${chooseRedux === YesOrNo.Yes ? "-redux" : ""}.json`), packageJsonDestination, true);
+        await copyFile(getTemplatePath(`../templates/api-v5/shared/${useTypescript ? "ts" : "js"}/template-package${useRedux ? "-redux" : ""}.json`), packageJsonDestination, true);
 
         // copy README
         await copyFile(getTemplatePath(`../templates/shared/README.md`),  path.join(destination, 'README.md'), true);
@@ -230,10 +238,10 @@ async function createChaynsApp({
             fs.mkdirSync(path.join(destination, '/src/constants'));
         }
 
-        await copyFile(getTemplatePath(`../templates/api-v5/shared/${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}/src/constants/server-urls.${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}`), path.join(destination, `/src/constants/server-urls.${chooseTypescript === YesOrNo.Yes ? 'ts' : 'js'}`));
+        await copyFile(getTemplatePath(`../templates/api-v5/shared/${extension}/src/constants/server-urls.${extension}`), path.join(destination, `/src/constants/server-urls.${extension}`));
 
         // copy tsconfig.json
-        if(chooseTypescript === YesOrNo.Yes) {
+        if(useTypescript) {
             await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
 
             if (!fs.existsSync(path.join(destination, '/src/types'))) {
@@ -258,12 +266,12 @@ async function createChaynsApp({
             await execaCommand('git init', { cwd: destination });
             spinner.succeed('Initialized a Git repository');
         } catch(e) {
-            throw e;
             spinner.fail(
                 `Failed to initialize a Git repository. You can do this yourself by running ${chalk.cyanBright(
                     `git init`
                 )}.`
             );
+            throw e;
         }
     }
 
