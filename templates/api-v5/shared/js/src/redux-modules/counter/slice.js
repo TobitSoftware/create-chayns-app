@@ -16,8 +16,13 @@ const slice = createSlice({
             state.value += payload;
         },
     },
+    selectors: {
+        selectCounterState: (state) => state,
+        selectCounterValue: (state) => state.value,
+    },
 });
 
 export const { increment, decrement, incrementByAmount } = slice.actions;
+export const { selectCounterState, selectCounterValue } = slice.selectors;
 export const counterReducer = slice.reducer;
 export const counterSliceName = slice.name;

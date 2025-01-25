@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { WaitUntil } from 'chayns-api';
 import { SmallWaitCursor } from '@chayns-components/core';
 import { useSelector } from 'react-redux';
-import { selectCount } from '../redux-modules/counter/counterSelectors';
+import { selectCounterValue } from '../redux-modules/counter/slice';
 import './app.scss';
 
 const App = () => {
-    const counter = useSelector(selectCount);
+    const counter = useSelector(selectCounterValue);
 
     const [taskList] = useState(() => [
         // first level tasks are executed one after the other
