@@ -1,9 +1,9 @@
-import globals from "globals";
-import js from "@eslint/js";
+import globals from 'globals';
+import js from '@eslint/js';
 
 export default [
     {
-        ignores: ['**/dist/**', '**/template/**']
+        ignores: ['**/dist/**', '**/template/**'],
     },
     js.configs.recommended,
     {
@@ -13,5 +13,5 @@ export default [
                 ...globals.node,
             },
         },
-    }
+    },
 ];

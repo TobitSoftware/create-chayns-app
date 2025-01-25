@@ -2,11 +2,7 @@ import path from 'path';
 import { mkdir, writeFile, readFile } from 'fs/promises';
 import glob from 'fast-glob';
 
-export default async function copyTemplate({
-    destination,
-    templateDir,
-    adjustContent,
-}) {
+export default async function copyTemplate({ destination, templateDir, adjustContent }) {
     const filenames = await glob('**/*', { cwd: templateDir });
 
     const filePromises = filenames.map(async (filename) => {
@@ -30,4 +26,4 @@ export default async function copyTemplate({
     });
 
     await Promise.all(filePromises);
-};
+}

@@ -5,10 +5,10 @@ import validate from 'validate-npm-package-name';
 import chalk from 'chalk';
 import path from 'path';
 import { isYarn } from 'is-npm';
-import{ execa, execaCommand } from 'execa';
+import { execa, execaCommand } from 'execa';
 import { Command } from 'commander';
 import ora from 'ora';
-import fs from "fs";
+import fs from 'fs';
 import { writeFile as writeFileAsync, readFile as readFileAsync } from 'fs/promises';
 import pkg from '../package.json' with { type: 'json' };
 import { ProjectTypes, ProjectVersions, YesOrNoChoices } from './constants/projectTypes.js';
@@ -26,25 +26,19 @@ program
     .option('-G, --no-git', 'initialize the project without a git repository')
     .option('-C, --no-initial-commit', "don't perform an initial commit")
     .option('-I, --no-install', "don't install packages after initialization")
-    .option('-M, --module-federation', "install to use as module (only internal)")
+    .option('-M, --module-federation', 'install to use as module (only internal)')
     .option(
         '-p, --package-manager <manager>',
-        'specify the package manager to use (`npm` or `yarn`). Defaults to the one used to execute the command.'
+        'specify the package manager to use (`npm` or `yarn`). Defaults to the one used to execute the command.',
     )
     .action(createChaynsApp)
     .parse(process.argv);
 
-async function createChaynsApp({
-    git,
-    initialCommit,
-    install,
-    packageManager,
-    moduleFederation
-}) {
+async function createChaynsApp({ git, initialCommit, install, packageManager, moduleFederation }) {
     let projectVersion;
     let projectType;
 
-    if(!moduleFederation) {
+    if (!moduleFederation) {
         ({ projectVersion } = await prompt({
             type: 'select',
             name: 'projectVersion',
@@ -72,15 +66,11 @@ async function createChaynsApp({
             },
         ]);
 
-        const { validForNewPackages, errors = [], warnings = [] } = validate(
-            packageName
-        );
+        const { validForNewPackages, errors = [], warnings = [] } = validate(packageName);
 
         if (!validForNewPackages) {
             console.log(
-                `\n${chalk.hex('#31D1DF')(
-                    `\`${packageName}\``
-                )} is unfortunately not a valid project name, because:`
+                `\n${chalk.hex('#31D1DF')(`\`${packageName}\``)} is unfortunately not a valid project name, because:`,
             );
             for (const message of [...errors, ...warnings]) {
                 console.log(chalk.hex('#94A3B8')(`  - ${message}`));
@@ -103,21 +93,18 @@ async function createChaynsApp({
             'package-name': projectName,
             'readable-package-name': toCapitalizedWords(projectName),
             description: summary,
-            'install-command':
-                usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
+            'install-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
             'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run',
-            'package-name-underscore': projectName.replace('-', '_')
+            'package-name-underscore': projectName.replace('-', '_'),
         });
     }
 
     const destination = path.resolve(projectName);
 
     const usedPackageManager = packageManager || (isYarn ? 'yarn' : 'npm');
-    if(projectVersion === ProjectVersions.v4) {
+    if (projectVersion === ProjectVersions.v4) {
         console.log(
-            `\n${chalk.bold.magentaBright(
-                'Awesome!'
-            )} Please wait a quick second while we bootstrap your project...\n`
+            `\n${chalk.bold.magentaBright('Awesome!')} Please wait a quick second while we bootstrap your project...\n`,
         );
 
         switch (projectType) {
@@ -130,7 +117,7 @@ async function createChaynsApp({
                          * relocate loader doesn't copy the template folder.
                          */
                         ` ${dirname} `.trim(),
-                        '../templates/page'
+                        '../templates/page',
                     ),
                     adjustContent: (content) =>
                         mapReplace(fillTemplates(content), { 'tapp-style': '' }),
@@ -140,10 +127,7 @@ async function createChaynsApp({
                 await copyTemplate({
                     destination,
                     projectName,
-                    templateDir: path.join(
-                        ` ${dirname} `.trim(),
-                        '../templates/page'
-                    ),
+                    templateDir: path.join(` ${dirname} `.trim(), '../templates/page'),
                     adjustContent: (content) =>
                         mapReplace(fillTemplates(content), {
                             'tapp-style': ' style="padding: 0 0 16px !important"',
@@ -162,10 +146,13 @@ async function createChaynsApp({
             type: 'select',
             name: 'reactVersion',
             message: 'Which react version do you want to use?',
-            choices: [{ name: 'v18', value: 18 }, { name: 'v19', value: 19 }],
-            result (selected) {
+            choices: [
+                { name: 'v18', value: 18 },
+                { name: 'v19', value: 19 },
+            ],
+            result(selected) {
                 return this.map(selected)[selected];
-            }
+            },
         });
 
         const { useRedux } = await prompt({
@@ -173,7 +160,7 @@ async function createChaynsApp({
             name: 'useRedux',
             message: 'Do you want to add redux-toolkit?',
             choices: YesOrNoChoices,
-            result (selected) {
+            result(selected) {
                 return this.map(selected)[selected];
             },
         });
@@ -183,7 +170,7 @@ async function createChaynsApp({
             name: 'useTypescript',
             message: 'Do you want to add typescript?',
             choices: YesOrNoChoices,
-            result (selected) {
+            result(selected) {
                 return this.map(selected)[selected];
             },
         });
@@ -193,56 +180,58 @@ async function createChaynsApp({
             name: 'useVitest',
             message: 'Do you want to add vitest?',
             choices: YesOrNoChoices,
-            result (selected) {
+            result(selected) {
                 return this.map(selected)[selected];
             },
         });
 
-        const getTemplatePath = (temp) =>  path.join(` ${dirname} `.trim(), temp)
+        const getTemplatePath = (temp) => path.join(` ${dirname} `.trim(), temp);
         const copyFile = async (from, to, map) => {
             let content = await readFileAsync(from, { encoding: 'utf-8' });
-            if(map) {
+            if (map) {
                 content = mapReplace(content, {
                     'package-name': projectName,
                     'readable-package-name': toCapitalizedWords(projectName),
                     description: summary,
-                    'install-command':
-                        usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
-                    'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run'
-                })
+                    'install-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
+                    'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run',
+                });
             }
             await writeFileAsync(to, content);
-        }
+        };
 
         const handleReplace = (content) => {
-           return mapReplace(fillTemplates(content), {
-                'tapp-style': projectType === ProjectTypes.pagemakerPlugin ? ' style="padding: 0 0 16px !important"' : '',
+            return mapReplace(fillTemplates(content), {
+                'tapp-style':
+                    projectType === ProjectTypes.pagemakerPlugin
+                        ? ' style="padding: 0 0 16px !important"'
+                        : '',
             });
-        }
+        };
 
         const extension = useTypescript ? 'ts' : 'js';
 
         // redux modules
-        if(useRedux) {
+        if (useRedux) {
             const templateSharedPath = `../templates/api-v5/shared/${extension}/src`;
             await copyTemplate({
-                destination: destination + "/src",
+                destination: destination + '/src',
                 projectName,
-                templateDir: path.join(
-                    ` ${dirname} `.trim(),
-                    templateSharedPath
-                )
+                templateDir: path.join(` ${dirname} `.trim(), templateSharedPath),
             });
-            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/.eslintrc`), path.join(destination, '.eslintrc'));
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/shared/ts/.eslintrc`),
+                path.join(destination, '.eslintrc'),
+            );
         }
 
         // Main template
-        const templatePath = `../templates/api-v5/page${useTypescript ? "-ts" : ""}${moduleFederation ? "-module":""}${useRedux ? "-redux" : ""}`;
+        const templatePath = `../templates/api-v5/page${useTypescript ? '-ts' : ''}${moduleFederation ? '-module' : ''}${useRedux ? '-redux' : ''}`;
         await copyTemplate({
             destination,
             projectName,
             templateDir: getTemplatePath(templatePath),
-            adjustContent: handleReplace
+            adjustContent: handleReplace,
         });
 
         // create package json
@@ -258,45 +247,85 @@ async function createChaynsApp({
         });
 
         // copy README
-        await copyFile(getTemplatePath(`../templates/shared/README.md`),  path.join(destination, 'README.md'), true);
+        await copyFile(
+            getTemplatePath(`../templates/shared/README.md`),
+            path.join(destination, 'README.md'),
+            true,
+        );
 
         // copy gitignore
-        await copyFile(getTemplatePath(`../templates/shared/template-gitignore`),  path.join(destination, '.gitignore'), true);
+        await copyFile(
+            getTemplatePath(`../templates/shared/template-gitignore`),
+            path.join(destination, '.gitignore'),
+            true,
+        );
 
-        await copyFile(getTemplatePath(`../templates/api-v5/shared/.env`), path.join(destination, '.env'));
-        await copyFile(getTemplatePath(`../templates/api-v5/shared/.env.development.local`), path.join(destination, '.env.development.local'));
+        await copyFile(
+            getTemplatePath(`../templates/api-v5/shared/.env`),
+            path.join(destination, '.env'),
+        );
+        await copyFile(
+            getTemplatePath(`../templates/api-v5/shared/.env.development.local`),
+            path.join(destination, '.env.development.local'),
+        );
 
         if (!fs.existsSync(path.join(destination, '/src/constants'))) {
             fs.mkdirSync(path.join(destination, '/src/constants'));
         }
 
-        await copyFile(getTemplatePath(`../templates/api-v5/shared/${extension}/src/constants/server-urls.${extension}`), path.join(destination, `/src/constants/server-urls.${extension}`));
+        await copyFile(
+            getTemplatePath(
+                `../templates/api-v5/shared/${extension}/src/constants/server-urls.${extension}`,
+            ),
+            path.join(destination, `/src/constants/server-urls.${extension}`),
+        );
 
         // copy tsconfig.json
-        if(useTypescript) {
-            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`), path.join(destination, 'tsconfig.json'));
+        if (useTypescript) {
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/shared/ts/tsconfig.json`),
+                path.join(destination, 'tsconfig.json'),
+            );
 
             if (!fs.existsSync(path.join(destination, '/src/types'))) {
                 fs.mkdirSync(path.join(destination, '/src/types'));
             }
-            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/global.d.ts`), path.join(destination, '/src/types/global.d.ts'));
-            await copyFile(getTemplatePath(`../templates/api-v5/shared/ts/src/types/environment.d.ts`), path.join(destination, '/src/types/environment.d.ts'));
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/shared/ts/src/types/global.d.ts`),
+                path.join(destination, '/src/types/global.d.ts'),
+            );
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/shared/ts/src/types/environment.d.ts`),
+                path.join(destination, '/src/types/environment.d.ts'),
+            );
         }
 
         if (useVitest) {
             if (!fs.existsSync(path.join(destination, '/tests'))) {
                 fs.mkdirSync(path.join(destination, '/tests'));
             }
-            await copyFile(getTemplatePath('../templates/shared/tests/setup.js'), path.join(destination, '/tests/setup.js'));
-            await copyFile(getTemplatePath(`../templates/shared/vitest.config.mjs`), path.join(destination, `/vitest.config.m${extension}`));
+            await copyFile(
+                getTemplatePath('../templates/shared/tests/setup.js'),
+                path.join(destination, '/tests/setup.js'),
+            );
+            await copyFile(
+                getTemplatePath(`../templates/shared/vitest.config.mjs`),
+                path.join(destination, `/vitest.config.m${extension}`),
+            );
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');
-        if(moduleFederation) {
+        if (moduleFederation) {
             const toolkitFileName = `toolkit.config-module.js`;
-            await copyFile(getTemplatePath(`../templates/api-v5/shared/${toolkitFileName}`), fileDestination);
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/shared/${toolkitFileName}`),
+                fileDestination,
+            );
         } else {
-            await copyFile(getTemplatePath(`../templates/api-v5/shared/toolkit.config.js`), fileDestination);
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/shared/toolkit.config.js`),
+                fileDestination,
+            );
         }
     }
 
@@ -305,11 +334,11 @@ async function createChaynsApp({
         try {
             await execaCommand('git init', { cwd: destination });
             spinner.succeed('Initialized a Git repository');
-        } catch(e) {
+        } catch (e) {
             spinner.fail(
                 `Failed to initialize a Git repository. You can do this yourself by running ${chalk.cyanBright(
-                    `git init`
-                )}.`
+                    `git init`,
+                )}.`,
             );
             throw e;
         }
@@ -317,24 +346,18 @@ async function createChaynsApp({
 
     if (install) {
         const spinner = ora(
-            `Installing packages using ${chalk.blueBright(usedPackageManager)}`
+            `Installing packages using ${chalk.blueBright(usedPackageManager)}`,
         ).start();
         try {
             await execaCommand(`${usedPackageManager} install`, {
                 cwd: destination,
             });
-            spinner.succeed(
-                `Installed packages with ${chalk.blueBright(
-                    usedPackageManager
-                )}`
-            );
+            spinner.succeed(`Installed packages with ${chalk.blueBright(usedPackageManager)}`);
         } catch {
             spinner.fail(
                 `Failed to install packages with ${chalk.blueBright(
-                    usedPackageManager
-                )}. You can do this yourself by running ${chalk.cyanBright(
-                    `${usedPackageManager} install`
-                )}.`
+                    usedPackageManager,
+                )}. You can do this yourself by running ${chalk.cyanBright(`${usedPackageManager} install`)}.`,
             );
         }
     }
@@ -353,20 +376,13 @@ async function createChaynsApp({
         }
     }
 
-    console.log(
-        `\n${chalk.bold.greenBright(
-            'Congrats!'
-        )} Your new project is ready to go!`
-    );
+    console.log(`\n${chalk.bold.greenBright('Congrats!')} Your new project is ready to go!`);
 
-    const runCommand =
-        usedPackageManager === 'yarn' ? 'yarn dev' : 'npm run dev';
+    const runCommand = usedPackageManager === 'yarn' ? 'yarn dev' : 'npm run dev';
 
     console.log(
         `Open the created ${chalk.yellowBright(
-            `./${projectName}/`
-        )} folder in your favorite editor and start ${chalk.cyanBright(
-            '`' + runCommand + '`'
-        )}.\n`
+            `./${projectName}/`,
+        )} folder in your favorite editor and start ${chalk.cyanBright('`' + runCommand + '`')}.\n`,
     );
 }

@@ -10,11 +10,8 @@ export default function mapReplace(input, replacementMap) {
     let returnValue = input;
 
     for (const [match, replacement] of Object.entries(replacementMap)) {
-        returnValue = returnValue.replace(
-            new RegExp(`\\{\\{ ${match} \\}\\}`, 'g'),
-            replacement
-        );
+        returnValue = returnValue.replace(new RegExp(`\\{\\{ ${match} \\}\\}`, 'g'), replacement);
     }
 
     return returnValue;
-};
+}

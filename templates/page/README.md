@@ -13,8 +13,7 @@
 
 ## Get Started
 
-To get started with working on the project first you have to install its
-dependencies:
+To get started with working on the project first you have to install its dependencies:
 
 ```bash
 {{ install-command }}
@@ -24,16 +23,15 @@ Then you will have the following commands available:
 
 ### `{{ run-command }} dev`
 
-This starts the project with a local server for development. Typically this will
-be on [`http://localhost:1234/`](http://localhost:1234/), but this
+This starts the project with a local server for development. Typically this will be on
+[`http://localhost:1234/`](http://localhost:1234/), but this
 [can be adjusted](https://github.com/TobitSoftware/chayns-toolkit#development-options).
 
 ### `{{ run-command }} build`
 
 This builds your project for production.
 
-> If you want to analyze your bundle size you can do so by passing the `-a` flag
-> to this command.
+> If you want to analyze your bundle size you can do so by passing the `-a` flag to this command.
 
 ### `{{ run-command }} lint`
 
@@ -45,7 +43,6 @@ Automatically formats all of the source code in your project.
 
 ---
 
-This project is based on
-[`chayns-toolkit`](https://github.com/TobitSoftware/chayns-toolkit). If you
+This project is based on [`chayns-toolkit`](https://github.com/TobitSoftware/chayns-toolkit). If you
 encounter any issues with the toolchain and the commands, please
 [open an issue](https://github.com/TobitSoftware/chayns-toolkit/issues/new).

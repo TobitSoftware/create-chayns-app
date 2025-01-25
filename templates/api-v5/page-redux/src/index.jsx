@@ -4,7 +4,7 @@ import AppWrapper from './components/AppWrapper';
 
 try {
     const root = createRoot(document.querySelector('#root'));
-    root.render(<AppWrapper/>);
+    root.render(<AppWrapper />);
 } catch (e) {
     console.error('Encountered error at `ReactDOM.render`: ', e);
 }

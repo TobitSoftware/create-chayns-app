@@ -8,4 +8,3 @@ try {
 } catch (e) {
     console.error('Encountered error at `ReactDOM.render`: ', e);
 }
-

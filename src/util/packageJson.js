@@ -1,36 +1,52 @@
-import { reduxDeps, getTypescriptDevDeps, v4Deps, v4DevDeps, getV5Deps, v5DevDeps, testDevDeps } from "../constants/dependencies.js";
-import { ProjectVersions } from "../constants/projectTypes.js";
-import { resolvePackageVersion } from "./resolvePackageVersion.js";
-import path from "path";
-import fs from "fs";
-import ora from "ora";
+import {
+    reduxDeps,
+    getTypescriptDevDeps,
+    v4Deps,
+    v4DevDeps,
+    getV5Deps,
+    v5DevDeps,
+    testDevDeps,
+} from '../constants/dependencies.js';
+import { ProjectVersions } from '../constants/projectTypes.js';
+import { resolvePackageVersion } from './resolvePackageVersion.js';
+import path from 'path';
+import fs from 'fs';
+import ora from 'ora';
 
 const createBaseConfig = (name, description) => ({
     name,
-    "version": "1.0.0",
-    "private": true,
+    version: '1.0.0',
+    private: true,
     description,
-    "keywords": ["chayns", "chayns-toolkit", "react"],
-    "scripts": {
-        "build": "chayns-toolkit build",
-        "dev": "chayns-toolkit dev",
-        "start": "chayns-toolkit dev",
-        "format": "prettier . --write",
-        "lint": "chayns-toolkit lint"
+    keywords: ['chayns', 'chayns-toolkit', 'react'],
+    scripts: {
+        build: 'chayns-toolkit build',
+        dev: 'chayns-toolkit dev',
+        start: 'chayns-toolkit dev',
+        format: 'prettier . --write',
+        lint: 'chayns-toolkit lint',
     },
-    "prettier": {
-        "proseWrap": "always",
-        "singleQuote": true,
-        "tabWidth": 4
+    prettier: {
+        proseWrap: 'always',
+        singleQuote: true,
+        tabWidth: 4,
+        printWidth: 100,
     },
-    "eslintConfig": {
-        "extends": "@chayns-toolkit"
+    eslintConfig: {
+        extends: '@chayns-toolkit',
     },
     dependencies: {},
-    devDependencies: {}
-})
+    devDependencies: {},
+});
 
-export const buildPackageJson = async ({ name, description = '', devDependencies = {}, dependencies = {}, useTypescript, useVitest }) => {
+export const buildPackageJson = async ({
+    name,
+    description = '',
+    devDependencies = {},
+    dependencies = {},
+    useTypescript,
+    useVitest,
+}) => {
     const config = createBaseConfig(name, description);
 
     for (let [k, v] of Object.entries(devDependencies).sort(([a], [b]) => a.localeCompare(b))) {
@@ -50,9 +66,15 @@ export const buildPackageJson = async ({ name, description = '', devDependencies
     }
 
     return JSON.stringify(config, undefined, 4);
-}
+};
 
-export const createPackageJson = async ({ destination, projectVersion, reactVersion, useRedux, ...options }) => {
+export const createPackageJson = async ({
+    destination,
+    projectVersion,
+    reactVersion,
+    useRedux,
+    ...options
+}) => {
     const { useTypescript, useVitest } = options;
     const spinner = ora(`Resolving latest versions of required dependencies`).start();
     let content;
@@ -62,10 +84,10 @@ export const createPackageJson = async ({ destination, projectVersion, reactVers
             ...options,
             dependencies: v4Deps,
             devDependencies: v4DevDeps,
-        })
+        });
     } else {
         const dependencies = getV5Deps(reactVersion);
-        const devDependencies = { ...v5DevDeps }
+        const devDependencies = { ...v5DevDeps };
         if (useRedux) {
             Object.assign(dependencies, reduxDeps);
         }
@@ -80,4 +102,4 @@ export const createPackageJson = async ({ destination, projectVersion, reactVers
     spinner.succeed('Resolved latest versions of required dependencies');
 
     fs.writeFileSync(packageJsonDestination, content);
-}
+};

@@ -1,4 +1,4 @@
-import { exec } from "node:child_process";
+import { exec } from 'node:child_process';
 
 export const resolvePackageVersion = async (pkg, tag) => {
     const target = tag ? `${pkg}@${tag}` : pkg;
@@ -7,11 +7,11 @@ export const resolvePackageVersion = async (pkg, tag) => {
             if (error) {
                 reject(error);
             } else {
-                resolve(out.trim())
+                resolve(out.trim());
             }
-        })
-    })
+        });
+    });
     const parsedResult = JSON.parse(result);
     const version = Array.isArray(parsedResult) ? parsedResult.pop() : parsedResult;
     return `^${version}`;
-}
+};

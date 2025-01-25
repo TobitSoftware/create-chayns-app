@@ -7,12 +7,12 @@ module.exports = buildToolkitConfig({
     },
     output: {
         entryPoints: {
-            'index': {
+            index: {
                 pathIndex: './src/index',
                 pathHtml: './src/index.html',
             },
             // Add more entrypoints here
         },
-        cssVersion: '5.0'
+        cssVersion: '5.0',
     },
-})
+});

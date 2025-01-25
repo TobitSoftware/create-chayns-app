@@ -10,20 +10,23 @@ const App = () => {
 
     const [taskList] = useState(() => [
         // first level tasks are executed one after the other
-        () => new Promise((resolve) => { setTimeout(resolve, 1000) }), // Add your initial Requests, textstrings here
+        () =>
+            new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            }), // Add your initial Requests, textstrings here
         [
             // second level tasks are executed in parallel
-        ]
+        ],
     ]);
 
     return (
         <WaitUntil
             tasks={taskList}
-            loadingComponent={(
+            loadingComponent={
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <SmallWaitCursor />
                 </div>
-            )}
+            }
         >
             <h1>Hi! Welcome to your newly created chayns application!</h1>
             <p>Count: {counter}</p>
