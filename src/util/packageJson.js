@@ -1,6 +1,6 @@
-import { reduxDeps, getTypescriptDevDeps, v4Deps, v4DevDeps, getV5Deps, v5DevDeps, testDevDeps } from "../constants/dependencies";
-import { ProjectVersions } from "../constants/projectTypes";
-import { resolvePackageVersion } from "./resolvePackageVersion";
+import { reduxDeps, getTypescriptDevDeps, v4Deps, v4DevDeps, getV5Deps, v5DevDeps, testDevDeps } from "../constants/dependencies.js";
+import { ProjectVersions } from "../constants/projectTypes.js";
+import { resolvePackageVersion } from "./resolvePackageVersion.js";
 import path from "path";
 import fs from "fs";
 import ora from "ora";

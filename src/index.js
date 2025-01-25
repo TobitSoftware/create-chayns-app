@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { prompt } from 'enquirer';
+import Enquirer from 'enquirer';
 import validate from 'validate-npm-package-name';
 import chalk from 'chalk';
 import path from 'path';
@@ -10,17 +10,19 @@ import { Command } from 'commander';
 import ora from 'ora';
 import fs from "fs";
 import { writeFile as writeFileAsync, readFile as readFileAsync } from 'fs/promises';
-import { version } from '../package.json';
-import { ProjectTypes, ProjectVersions, YesOrNoChoices } from './constants/projectTypes';
-import copyTemplate from './util/copyTemplate';
-import mapReplace from './util/mapReplace';
-import { createPackageJson } from './util/packageJson';
-import toCapitalizedWords from './util/toCapitalizedWords';
+import pkg from '../package.json' with { type: 'json' };
+import { ProjectTypes, ProjectVersions, YesOrNoChoices } from './constants/projectTypes.js';
+import copyTemplate from './util/copyTemplate.js';
+import mapReplace from './util/mapReplace.js';
+import { createPackageJson } from './util/packageJson.js';
+import toCapitalizedWords from './util/toCapitalizedWords.js';
 
+const { prompt } = Enquirer;
 const program = new Command();
+const dirname = import.meta.dirname;
 
 program
-    .version(version)
+    .version(pkg.version)
     .option('-G, --no-git', 'initialize the project without a git repository')
     .option('-C, --no-initial-commit', "don't perform an initial commit")
     .option('-I, --no-install', "don't install packages after initialization")
@@ -127,7 +129,7 @@ async function createChaynsApp({
                          * Do some nasty dynamic stuff to the __dirname so the
                          * relocate loader doesn't copy the template folder.
                          */
-                        ` ${__dirname} `.trim(),
+                        ` ${dirname} `.trim(),
                         '../templates/page'
                     ),
                     adjustContent: (content) =>
@@ -139,7 +141,7 @@ async function createChaynsApp({
                     destination,
                     projectName,
                     templateDir: path.join(
-                        ` ${__dirname} `.trim(),
+                        ` ${dirname} `.trim(),
                         '../templates/page'
                     ),
                     adjustContent: (content) =>
@@ -196,7 +198,7 @@ async function createChaynsApp({
             },
         });
 
-        const getTemplatePath = (temp) =>  path.join(` ${__dirname} `.trim(), temp)
+        const getTemplatePath = (temp) =>  path.join(` ${dirname} `.trim(), temp)
         const copyFile = async (from, to, map) => {
             let content = await readFileAsync(from, { encoding: 'utf-8' });
             if(map) {
@@ -227,7 +229,7 @@ async function createChaynsApp({
                 destination: destination + "/src",
                 projectName,
                 templateDir: path.join(
-                    ` ${__dirname} `.trim(),
+                    ` ${dirname} `.trim(),
                     templateSharedPath
                 )
             });
