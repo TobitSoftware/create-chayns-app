@@ -5,7 +5,7 @@ import validate from 'validate-npm-package-name';
 import chalk from 'chalk';
 import path from 'path';
 import { isYarn } from 'is-npm';
-import execa, { command as execaCommand } from 'execa';
+import{ execa, execaCommand } from 'execa';
 import { Command } from 'commander';
 import ora from 'ora';
 import fs from "fs";
