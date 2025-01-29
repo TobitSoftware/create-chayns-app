@@ -6,6 +6,7 @@ import {
     getV5Deps,
     v5DevDeps,
     testDevDeps,
+    internalDeps,
 } from '../constants/dependencies.js';
 import { ProjectVersions } from '../constants/projectTypes.js';
 import { resolvePackageVersion } from './resolvePackageVersion.js';
@@ -73,6 +74,7 @@ export const createPackageJson = async ({
     projectVersion,
     reactVersion,
     useRedux,
+    tobitInternal,
     ...options
 }) => {
     const { useTypescript, useVitest } = options;
@@ -96,6 +98,9 @@ export const createPackageJson = async ({
         }
         if (useVitest) {
             Object.assign(devDependencies, testDevDeps);
+        }
+        if (tobitInternal) {
+            Object.assign(dependencies, internalDeps);
         }
         content = await buildPackageJson({ ...options, dependencies, devDependencies });
     }
