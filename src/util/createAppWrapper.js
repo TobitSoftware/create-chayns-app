@@ -4,14 +4,14 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
     let indent = 0;
 
     const reactNamedImportsList = [];
-    if (useTypescript) {
-        reactNamedImportsList.push('FC');
-    }
     if (moduleFederation && useTypescript) {
-        reactNamedImportsList.push('ComponentProps');
+        reactNamedImportsList.push('ComponentPropsWithoutRef');
     }
     if (tobitInternal) {
         reactNamedImportsList.push('Suspense');
+    }
+    if (moduleFederation && useRedux) {
+        reactNamedImportsList.push('useState');
     }
     const reactNamedImports = reactNamedImportsList.length ? `, { ${reactNamedImportsList.join(', ')} }` : '';
 
@@ -28,7 +28,7 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
     }
     lines.push(`import App from './App';`)
     if (useRedux) {
-        lines.push(`import store from '../redux-modules';`);
+        lines.push(`import ${moduleFederation ? '{ createStore }' : 'store'} from '../redux-modules';`);
     }
     if (tobitInternal && moduleFederation) {
         lines.push(`import '../utils/logger';`);
@@ -40,7 +40,15 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
         lines.push('');
     }
 
-    lines.push(`const AppWrapper${useTypescript ? ': FC' : ''}${useTypescript && moduleFederation ? '<ComponentProps<typeof ChaynsProvider>>' : ''} = (${moduleFederation ? 'props' : ''}) => (`);
+    if (moduleFederation && useRedux) {
+        lines.push(`const AppWrapper = (${moduleFederation ? 'props' : ''}${moduleFederation && useTypescript ? ': ComponentPropsWithoutRef<typeof ChaynsProvider>' : ''}) => {`);
+        indent += 4;
+        lines.push(`${' '.repeat(indent)}const [store] = useState(createStore);`);
+        lines.push('');
+        lines.push(`${' '.repeat(indent)}return (`);
+    } else {
+        lines.push(`const AppWrapper = (${moduleFederation ? 'props' : ''}${moduleFederation && useTypescript ? ': ComponentPropsWithoutRef<typeof ChaynsProvider>' : ''}) => (`);
+    }
     indent += 4;
 
     if (moduleFederation) {
@@ -92,7 +100,13 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
         lines.push(`${' '.repeat(indent)}</div>`);
     }
 
-    lines.push(');');
+    if (moduleFederation && useRedux) {
+        indent -= 4;
+        lines.push(`${' '.repeat(indent)});`);
+        lines.push('};');
+    } else {
+        lines.push(');');
+    }
 
     lines.push('');
     if (moduleFederation) {

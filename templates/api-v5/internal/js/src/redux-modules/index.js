@@ -6,9 +6,12 @@ const rootReducer = combineReducers({
     counter: counterReducer,
 });
 
-const Store = configureStore({
+export const createStore = (preloadedState) => configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
+    preloadedState,
 });
 
-export default Store;
+const store = createStore();
+
+export default store;
