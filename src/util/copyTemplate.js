@@ -15,9 +15,7 @@ export default async function copyTemplate({ destination, templateDir, adjustCon
         }
 
         const realFileName = filename
-            .replace('template-gitignore', '.gitignore')
-            .replace('template-package-redux.json', 'package.json')
-            .replace('template-package.json', 'package.json');
+            .replace('template-gitignore', '.gitignore');
 
         const fileDestination = path.join(destination, realFileName);
 
