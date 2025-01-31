@@ -42,7 +42,7 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
 
     if (tobitInternal) {
         try {
-            const res = await fetch(`https://repo.tobit.ag`, { method: 'HEAD' });
+            const res = await fetch(`https://repo.tobit.ag`, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
             if (!res.ok) {
                 tobitInternal = false;
             }
