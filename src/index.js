@@ -278,7 +278,7 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
 
         // copy gitignore
         await copyFile(
-            getTemplatePath(`../templates/shared/template-gitignore`),
+            getTemplatePath(`../templates/shared/.gitignore`),
             path.join(destination, '.gitignore'),
             true,
         );
@@ -431,7 +431,7 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
                 `./${projectName}/`,
             )} folder in your favorite editor.`,
         );
-        console.log(`Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('npx tobit-textstrings init')}.`)
+        console.log(`Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('`npx tobit-textstrings init`')}.`)
         console.log(`Search for ${chalk.greenBright('TODO:')} and follow the instructions.`);
         console.log(`Start ${chalk.cyanBright('`' + runCommand + '`')}.\n`);
     } else {

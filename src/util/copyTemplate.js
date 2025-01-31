@@ -14,12 +14,7 @@ export default async function copyTemplate({ destination, templateDir, adjustCon
             content = adjustContent(content);
         }
 
-        const realFileName = filename
-            .replace('template-gitignore', '.gitignore')
-            .replace('template-package-redux.json', 'package.json')
-            .replace('template-package.json', 'package.json');
-
-        const fileDestination = path.join(destination, realFileName);
+        const fileDestination = path.join(destination, filename);
 
         await mkdir(path.join(fileDestination, '..'), { recursive: true });
         await writeFile(fileDestination, content);
