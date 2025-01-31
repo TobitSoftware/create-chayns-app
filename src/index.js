@@ -298,9 +298,9 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
 
         await copyFile(
             getTemplatePath(
-                `../templates/api-v5/shared/${extension}/src/constants/server-urls.${extension}`,
+                `../templates/api-v5/shared/${extension}/src/constants/serverUrls.${extension}`,
             ),
-            path.join(destination, `/src/constants/server-urls.${extension}`),
+            path.join(destination, `/src/constants/serverUrls.${extension}`),
         );
 
         // copy tsconfig.json
