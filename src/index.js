@@ -16,6 +16,7 @@ import copyTemplate from './util/copyTemplate.js';
 import mapReplace from './util/mapReplace.js';
 import { createPackageJson } from './util/packageJson.js';
 import toCapitalizedWords from './util/toCapitalizedWords.js';
+import { createAppWrapper } from './util/createAppWrapper.js';
 
 const { prompt } = Enquirer;
 const program = new Command();
@@ -344,6 +345,18 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
                 getTemplatePath(`../templates/api-v5/internal/${extension}/src/utils/logger.${extension}`),
                 path.join(destination, `/src/utils/logger.${extension}`),
             );
+
+            const filePath = path.join(destination, `/src/components/AppWrapper.${extension}x`);
+            fs.writeFileSync(filePath, createAppWrapper({
+                useRedux,
+                useTypescript,
+                moduleFederation,
+                tobitInternal,
+                packageNameUnderscore: projectName.replace('-', '_'),
+            }));
+
+            const npmrcPath = path.join(destination, '.npmrc');
+            fs.writeFileSync(npmrcPath, 'registry=https://repo.tobit.ag/\n');
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');
@@ -412,9 +425,20 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
 
     const runCommand = usedPackageManager === 'yarn' ? 'yarn dev' : 'npm run dev';
 
-    console.log(
-        `Open the created ${chalk.yellowBright(
-            `./${projectName}/`,
-        )} folder in your favorite editor and start ${chalk.cyanBright('`' + runCommand + '`')}.\n`,
-    );
+    if (tobitInternal) {
+        console.log(
+            `Open the created ${chalk.yellowBright(
+                `./${projectName}/`,
+            )} folder in your favorite editor.`,
+        );
+        console.log(`Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('npx tobit-textstrings init')}.`)
+        console.log(`Search for ${chalk.greenBright('TODO:')} and follow the instructions.`);
+        console.log(`Start ${chalk.cyanBright('`' + runCommand + '`')}.\n`);
+    } else {
+        console.log(
+            `Open the created ${chalk.yellowBright(
+                `./${projectName}/`,
+            )} folder in your favorite editor and start ${chalk.cyanBright('`' + runCommand + '`')}.\n`,
+        );
+    }
 }
