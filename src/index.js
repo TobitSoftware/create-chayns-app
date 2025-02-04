@@ -356,7 +356,7 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
             }));
 
             const npmrcPath = path.join(destination, '.npmrc');
-            fs.writeFileSync(npmrcPath, 'registry=https://repo.tobit.ag/\n');
+            fs.writeFileSync(npmrcPath, 'registry=https://repo.tobit.ag/repository/npm/\n');
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');
