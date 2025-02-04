@@ -17,7 +17,7 @@ export const resolvePackageVersion = async (pkg, tag) => {
         const version = Array.isArray(parsedResult) ? parsedResult.pop() : parsedResult;
         return `^${version}`;
     } catch {
-        console.warn(`Could not resolve ${chalk.cyanBright(target)}`);
+        console.warn(`\n  Could not resolve ${chalk.yellow(target)}`);
         return tag || 'latest';
     }
 };
