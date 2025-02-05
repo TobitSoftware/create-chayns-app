@@ -12,12 +12,10 @@ export const resolvePackageVersion = async (pkg, tag) => {
                 const json = await res.json();
 
                 if (tag in json['dist-tags']) {
-                    console.log('version', json);
                     return `^${json['dist-tags'][tag]}`;
                 }
 
                 const version = semver.maxSatisfying(Object.keys(json.versions), tag)
-                console.log('version', version);
                 return `^${version}`;
             }
         } catch {
