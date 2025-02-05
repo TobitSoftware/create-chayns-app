@@ -45,3 +45,8 @@ export const testDevDeps = {
     jsdom: 'latest',
     vitest: 'latest',
 };
+
+export const internalDeps = {
+    'chayns-logger': 'latest',
+    'tobit-textstrings': 'latest',
+};

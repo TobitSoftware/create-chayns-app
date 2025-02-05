@@ -16,6 +16,7 @@ import copyTemplate from './util/copyTemplate.js';
 import mapReplace from './util/mapReplace.js';
 import { createPackageJson } from './util/packageJson.js';
 import toCapitalizedWords from './util/toCapitalizedWords.js';
+import { createAppWrapper } from './util/createAppWrapper.js';
 
 const { prompt } = Enquirer;
 const program = new Command();
@@ -27,6 +28,7 @@ program
     .option('-C, --no-initial-commit', "don't perform an initial commit")
     .option('-I, --no-install', "don't install packages after initialization")
     .option('-M, --module-federation', 'install to use as module (only internal)')
+    .option('-T, --tobit-internal', 'includes tobit internal packages (chayns-logger and tobit-textstrings)')
     .option(
         '-p, --package-manager <manager>',
         'specify the package manager to use (`npm` or `yarn`). Defaults to the one used to execute the command.',
@@ -34,9 +36,20 @@ program
     .action(createChaynsApp)
     .parse(process.argv);
 
-async function createChaynsApp({ git, initialCommit, install, packageManager, moduleFederation }) {
+async function createChaynsApp({ git, initialCommit, install, packageManager, moduleFederation, tobitInternal }) {
     let projectVersion;
     let projectType;
+
+    if (tobitInternal) {
+        try {
+            const res = await fetch(`https://repo.tobit.ag`, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
+            if (!res.ok) {
+                tobitInternal = false;
+            }
+        } catch {
+            tobitInternal = false;
+        }
+    }
 
     if (!moduleFederation) {
         ({ projectVersion } = await prompt({
@@ -96,6 +109,7 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
             'install-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm install',
             'run-command': usedPackageManager === 'yarn' ? 'yarn' : 'npm run',
             'package-name-underscore': projectName.replace('-', '_'),
+            'logger-import': tobitInternal ? `import './utils/logger';\n` : '',
         });
     }
 
@@ -223,6 +237,14 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
                 getTemplatePath(`../templates/api-v5/shared/ts/.eslintrc`),
                 path.join(destination, '.eslintrc'),
             );
+            if (tobitInternal) {
+                const templateInternalPath = `../templates/api-v5/internal/${extension}/src`;
+                await copyTemplate({
+                    destination: destination + '/src',
+                    projectName,
+                    templateDir: path.join(` ${dirname} `.trim(), templateInternalPath),
+                });
+            }
         }
 
         // Main template
@@ -244,6 +266,7 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
             useRedux,
             useTypescript,
             useVitest,
+            tobitInternal,
         });
 
         // copy README
@@ -275,9 +298,9 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
 
         await copyFile(
             getTemplatePath(
-                `../templates/api-v5/shared/${extension}/src/constants/server-urls.${extension}`,
+                `../templates/api-v5/shared/${extension}/src/constants/serverUrls.${extension}`,
             ),
-            path.join(destination, `/src/constants/server-urls.${extension}`),
+            path.join(destination, `/src/constants/serverUrls.${extension}`),
         );
 
         // copy tsconfig.json
@@ -312,6 +335,28 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
                 getTemplatePath(`../templates/shared/vitest.config.mjs`),
                 path.join(destination, `/vitest.config.m${extension}`),
             );
+        }
+
+        if (tobitInternal) {
+            if (!fs.existsSync(path.join(destination, '/src/utils'))) {
+                fs.mkdirSync(path.join(destination, '/src/utils'));
+            }
+            await copyFile(
+                getTemplatePath(`../templates/api-v5/internal/${extension}/src/utils/logger.${extension}`),
+                path.join(destination, `/src/utils/logger.${extension}`),
+            );
+
+            const filePath = path.join(destination, `/src/components/AppWrapper.${extension}x`);
+            fs.writeFileSync(filePath, createAppWrapper({
+                useRedux,
+                useTypescript,
+                moduleFederation,
+                tobitInternal,
+                packageNameUnderscore: projectName.replace('-', '_'),
+            }));
+
+            const npmrcPath = path.join(destination, '.npmrc');
+            fs.writeFileSync(npmrcPath, 'registry=https://repo.tobit.ag/repository/npm/\n');
         }
 
         const fileDestination = path.join(destination, 'toolkit.config.js');
@@ -380,9 +425,20 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
 
     const runCommand = usedPackageManager === 'yarn' ? 'yarn dev' : 'npm run dev';
 
-    console.log(
-        `Open the created ${chalk.yellowBright(
-            `./${projectName}/`,
-        )} folder in your favorite editor and start ${chalk.cyanBright('`' + runCommand + '`')}.\n`,
-    );
+    if (tobitInternal) {
+        console.log(
+            `Open the created ${chalk.yellowBright(
+                `./${projectName}/`,
+            )} folder in your favorite editor.`,
+        );
+        console.log(`Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('npx tobit-textstrings init')}.`)
+        console.log(`Search for ${chalk.greenBright('TODO:')} and follow the instructions.`);
+        console.log(`Start ${chalk.cyanBright('`' + runCommand + '`')}.\n`);
+    } else {
+        console.log(
+            `Open the created ${chalk.yellowBright(
+                `./${projectName}/`,
+            )} folder in your favorite editor and start ${chalk.cyanBright('`' + runCommand + '`')}.\n`,
+        );
+    }
 }

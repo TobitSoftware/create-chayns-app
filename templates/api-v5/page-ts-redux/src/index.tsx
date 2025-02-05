@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AppWrapper from './components/AppWrapper';
-
+{{ logger-import }}
 try {
     const root = createRoot(document.querySelector('#root') as Element);
     root.render(<AppWrapper />);

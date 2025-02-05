@@ -1,6 +1,6 @@
 {
     "name": "create-chayns-app",
-    "version": "1.2.0-beta.0",
+    "version": "1.2.0-beta.6",
     "private": false,
     "description": "Create a new chayns® development project in one command.",
     "keywords": [
@@ -55,6 +55,7 @@
         "ora": "^8.1.1",
         "prettier": "^3.4.2",
         "prettier-plugin-packagejson": "^2.5.8",
+        "semver": "^7.7.1",
         "validate-npm-package-name": "^6.0.0"
     },
     "publishConfig": {

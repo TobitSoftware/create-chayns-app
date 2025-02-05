@@ -5,7 +5,11 @@ const rootReducer = combineReducers({
     counter: counterReducer,
 });
 
-const Store = configureStore({
+export const createStore = (preloadedState) => configureStore({
     reducer: rootReducer,
+    preloadedState,
 });
-export default Store;
+
+const store = createStore();
+
+export default store;
