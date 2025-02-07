@@ -359,19 +359,13 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
             fs.writeFileSync(npmrcPath, 'registry=https://repo.tobit.ag/repository/npm/\n');
         }
 
+        const fileSource = getTemplatePath(`../templates/api-v5/shared/toolkit.config${moduleFederation ? '-module' : ''}.js`);
         const fileDestination = path.join(destination, 'toolkit.config.js');
-        if (moduleFederation) {
-            const toolkitFileName = `toolkit.config-module.js`;
-            await copyFile(
-                getTemplatePath(`../templates/api-v5/shared/${toolkitFileName}`),
-                fileDestination,
-            );
-        } else {
-            await copyFile(
-                getTemplatePath(`../templates/api-v5/shared/toolkit.config.js`),
-                fileDestination,
-            );
+        let configContent = fs.readFileSync(fileSource, 'utf-8');
+        if (tobitInternal) {
+            configContent = configContent.replace(/(\s+)(port:.*)/, `$1$2$1cert: '//fs1/SSL/tobitag.crt',$1key: '//fs1/SSL/tobitag.key',`);
         }
+        fs.writeFileSync(fileDestination, configContent);
     }
 
     if (git) {
