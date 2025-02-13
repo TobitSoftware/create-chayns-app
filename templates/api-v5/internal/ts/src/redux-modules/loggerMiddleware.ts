@@ -17,13 +17,13 @@ type MetaAction = {
 export const loggerMiddleware: Middleware = () => (next) => (action) => {
     try {
         const metaAction = action as MetaAction;
-        if (metaAction.meta.requestStatus === 'rejected') {
+        if (metaAction?.meta?.requestStatus === 'rejected') {
             if (metaAction.meta.aborted || metaAction.meta.condition) {
                 return next(action);
             }
             if (process.env.NODE_ENV === 'development') {
                 // eslint-disable-next-line no-console
-                console.log('redux action error', action);
+                console.warn('redux action error', action);
             }
             logger.error({
                 message: 'redux action error',
@@ -34,6 +34,10 @@ export const loggerMiddleware: Middleware = () => (next) => (action) => {
         }
         return next(action);
     } catch (ex) {
+        if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.warn('error in store', action);
+        }
         logger.error({
             message: 'error in store',
             data: {
