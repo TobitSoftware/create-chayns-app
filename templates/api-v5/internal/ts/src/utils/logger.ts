@@ -6,7 +6,9 @@ const logger = new ChaynsLogger({
     applicationUid: '<applicationUid>',
     overrideOnError: true,
     overrideConsoleError: process.env.NODE_ENV !== 'development',
-    useDevServer: process.env.NODE_ENV === 'development' || ['qa', 'development'].includes(process.env.BUILD_ENV),
+    useDevServer:
+        process.env.NODE_ENV === 'development' ||
+        ['qa', 'development'].includes(process.env.BUILD_ENV),
     version: process.env.BUILD_VERSION,
     throttleTime: 1000,
     middleware: (payload) => {

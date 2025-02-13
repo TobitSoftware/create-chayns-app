@@ -5,14 +5,15 @@ const rootReducer = combineReducers({
     counter: counterReducer,
 });
 
-export const createStore = (preloadedState?: RootState) => configureStore({
-    reducer: rootReducer,
-    preloadedState,
-});
+export const createStore = (preloadedState?: RootState) =>
+    configureStore({
+        reducer: rootReducer,
+        preloadedState,
+    });
 
 const store = createStore();
 
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppDispatch = ReturnType<typeof createStore>["dispatch"];
+export type AppDispatch = ReturnType<typeof createStore>['dispatch'];
 
 export default store;

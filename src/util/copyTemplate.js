@@ -14,8 +14,7 @@ export default async function copyTemplate({ destination, templateDir, adjustCon
             content = adjustContent(content);
         }
 
-        const realFileName = filename
-            .replace('template-gitignore', '.gitignore');
+        const realFileName = filename.replace('template-gitignore', '.gitignore');
 
         const fileDestination = path.join(destination, realFileName);
 

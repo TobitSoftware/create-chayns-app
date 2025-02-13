@@ -1,5 +1,10 @@
-
-export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, tobitInternal, packageNameUnderscore }) => {
+export const createAppWrapper = ({
+    useTypescript,
+    moduleFederation,
+    useRedux,
+    tobitInternal,
+    packageNameUnderscore,
+}) => {
     const lines = [];
     let indent = 0;
 
@@ -13,7 +18,9 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
     if (moduleFederation && useRedux) {
         reactNamedImportsList.push('useState');
     }
-    const reactNamedImports = reactNamedImportsList.length ? `, { ${reactNamedImportsList.join(', ')} }` : '';
+    const reactNamedImports = reactNamedImportsList.length
+        ? `, { ${reactNamedImportsList.join(', ')} }`
+        : '';
 
     lines.push(`import React${reactNamedImports} from 'react';`);
 
@@ -21,14 +28,18 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
         lines.push(`import { Provider } from 'react-redux';`);
     }
 
-    lines.push(`import { ChaynsProvider${moduleFederation ? ', withCompatMode' : ''} } from 'chayns-api';`)
+    lines.push(
+        `import { ChaynsProvider${moduleFederation ? ', withCompatMode' : ''} } from 'chayns-api';`,
+    );
     lines.push(`import { PageProvider } from '@chayns-components/core';`);
     if (tobitInternal) {
         lines.push(`import { TextStringProvider } from 'tobit-textstrings';`);
     }
-    lines.push(`import App from './App';`)
+    lines.push(`import App from './App';`);
     if (useRedux) {
-        lines.push(`import ${moduleFederation ? '{ createStore }' : 'store'} from '../redux-modules';`);
+        lines.push(
+            `import ${moduleFederation ? '{ createStore }' : 'store'} from '../redux-modules';`,
+        );
     }
     if (tobitInternal && moduleFederation) {
         lines.push(`import '../utils/logger';`);
@@ -41,20 +52,26 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
     }
 
     if (moduleFederation && useRedux) {
-        lines.push(`const AppWrapper = (${moduleFederation ? 'props' : ''}${moduleFederation && useTypescript ? ': ComponentPropsWithoutRef<typeof ChaynsProvider>' : ''}) => {`);
+        lines.push(
+            `const AppWrapper = (${moduleFederation ? 'props' : ''}${moduleFederation && useTypescript ? ': ComponentPropsWithoutRef<typeof ChaynsProvider>' : ''}) => {`,
+        );
         indent += 4;
         lines.push(`${' '.repeat(indent)}const [store] = useState(createStore);`);
         lines.push('');
         lines.push(`${' '.repeat(indent)}return (`);
     } else {
-        lines.push(`const AppWrapper = (${moduleFederation ? 'props' : ''}${moduleFederation && useTypescript ? ': ComponentPropsWithoutRef<typeof ChaynsProvider>' : ''}) => (`);
+        lines.push(
+            `const AppWrapper = (${moduleFederation ? 'props' : ''}${moduleFederation && useTypescript ? ': ComponentPropsWithoutRef<typeof ChaynsProvider>' : ''}) => (`,
+        );
     }
     indent += 4;
 
     if (moduleFederation) {
         lines.push(`${' '.repeat(indent)}<div className="${packageNameUnderscore}">`);
         indent += 4;
-        lines.push(`${' '.repeat(indent)}{/* eslint-disable-next-line react/jsx-props-no-spreading */}`);
+        lines.push(
+            `${' '.repeat(indent)}{/* eslint-disable-next-line react/jsx-props-no-spreading */}`,
+        );
     }
 
     lines.push(`${' '.repeat(indent)}<ChaynsProvider${moduleFederation ? ' {...props}' : ''}>`);
@@ -110,11 +127,11 @@ export const createAppWrapper = ({ useTypescript, moduleFederation, useRedux, to
 
     lines.push('');
     if (moduleFederation) {
-        lines.push('export default withCompatMode(AppWrapper);')
+        lines.push('export default withCompatMode(AppWrapper);');
     } else {
         lines.push('export default AppWrapper;');
     }
     lines.push('');
 
     return lines.join('\n');
-}
+};

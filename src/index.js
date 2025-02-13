@@ -28,7 +28,10 @@ program
     .option('-C, --no-initial-commit', "don't perform an initial commit")
     .option('-I, --no-install', "don't install packages after initialization")
     .option('-M, --module-federation', 'install to use as module (only internal)')
-    .option('-T, --tobit-internal', 'includes tobit internal packages (chayns-logger and tobit-textstrings)')
+    .option(
+        '-T, --tobit-internal',
+        'includes tobit internal packages (chayns-logger and tobit-textstrings)',
+    )
     .option(
         '-p, --package-manager <manager>',
         'specify the package manager to use (`npm` or `yarn`). Defaults to the one used to execute the command.',
@@ -36,13 +39,23 @@ program
     .action(createChaynsApp)
     .parse(process.argv);
 
-async function createChaynsApp({ git, initialCommit, install, packageManager, moduleFederation, tobitInternal }) {
+async function createChaynsApp({
+    git,
+    initialCommit,
+    install,
+    packageManager,
+    moduleFederation,
+    tobitInternal,
+}) {
     let projectVersion;
     let projectType;
 
     if (tobitInternal) {
         try {
-            const res = await fetch(`https://repo.tobit.ag`, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
+            const res = await fetch(`https://repo.tobit.ag`, {
+                method: 'HEAD',
+                signal: AbortSignal.timeout(3000),
+            });
             if (!res.ok) {
                 tobitInternal = false;
             }
@@ -342,28 +355,38 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
                 fs.mkdirSync(path.join(destination, '/src/utils'));
             }
             await copyFile(
-                getTemplatePath(`../templates/api-v5/internal/${extension}/src/utils/logger.${extension}`),
+                getTemplatePath(
+                    `../templates/api-v5/internal/${extension}/src/utils/logger.${extension}`,
+                ),
                 path.join(destination, `/src/utils/logger.${extension}`),
             );
 
             const filePath = path.join(destination, `/src/components/AppWrapper.${extension}x`);
-            fs.writeFileSync(filePath, createAppWrapper({
-                useRedux,
-                useTypescript,
-                moduleFederation,
-                tobitInternal,
-                packageNameUnderscore: projectName.replace('-', '_'),
-            }));
+            fs.writeFileSync(
+                filePath,
+                createAppWrapper({
+                    useRedux,
+                    useTypescript,
+                    moduleFederation,
+                    tobitInternal,
+                    packageNameUnderscore: projectName.replace('-', '_'),
+                }),
+            );
 
             const npmrcPath = path.join(destination, '.npmrc');
             fs.writeFileSync(npmrcPath, 'registry=https://repo.tobit.ag/repository/npm/\n');
         }
 
-        const fileSource = getTemplatePath(`../templates/api-v5/shared/toolkit.config${moduleFederation ? '-module' : ''}.js`);
+        const fileSource = getTemplatePath(
+            `../templates/api-v5/shared/toolkit.config${moduleFederation ? '-module' : ''}.js`,
+        );
         const fileDestination = path.join(destination, 'toolkit.config.js');
         let configContent = fs.readFileSync(fileSource, 'utf-8');
         if (tobitInternal) {
-            configContent = configContent.replace(/(\s+)(port:.*)/, `$1$2$1cert: '//fs1/SSL/tobitag.crt',$1key: '//fs1/SSL/tobitag.key',`);
+            configContent = configContent.replace(
+                /(\s+)(port:.*)/,
+                `$1$2$1cert: '//fs1/SSL/tobitag.crt',$1key: '//fs1/SSL/tobitag.key',`,
+            );
         }
         fs.writeFileSync(fileDestination, configContent);
     }
@@ -425,7 +448,9 @@ async function createChaynsApp({ git, initialCommit, install, packageManager, mo
                 `./${projectName}/`,
             )} folder in your favorite editor.`,
         );
-        console.log(`Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('npx tobit-textstrings init')}.`)
+        console.log(
+            `Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('npx tobit-textstrings init')}.`,
+        );
         console.log(`Search for ${chalk.greenBright('TODO:')} and follow the instructions.`);
         console.log(`Start ${chalk.cyanBright('`' + runCommand + '`')}.\n`);
     } else {

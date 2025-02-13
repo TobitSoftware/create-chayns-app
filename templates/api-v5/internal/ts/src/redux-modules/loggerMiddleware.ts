@@ -1,5 +1,5 @@
-import { Middleware } from "@reduxjs/toolkit";
-import logger from "../utils/logger";
+import { Middleware } from '@reduxjs/toolkit';
+import logger from '../utils/logger';
 
 type MetaAction = {
     type: string;
@@ -10,9 +10,9 @@ type MetaAction = {
         requestStatus: 'pending' | 'rejected' | 'fulfilled';
         aborted?: boolean;
         condition?: boolean;
-    },
+    };
     error?: Error;
-}
+};
 
 export const loggerMiddleware: Middleware = () => (next) => (action) => {
     try {
@@ -25,12 +25,15 @@ export const loggerMiddleware: Middleware = () => (next) => (action) => {
                 // eslint-disable-next-line no-console
                 console.warn('redux action error', action);
             }
-            logger.error({
-                message: 'redux action error',
-                customText: metaAction.type,
-                data: { arg: metaAction.meta.arg },
-                section: 'redux-modules/loggerMiddleware',
-            }, metaAction.error);
+            logger.error(
+                {
+                    message: 'redux action error',
+                    customText: metaAction.type,
+                    data: { arg: metaAction.meta.arg },
+                    section: 'redux-modules/loggerMiddleware',
+                },
+                metaAction.error,
+            );
         }
         return next(action);
     } catch (ex) {
@@ -38,12 +41,15 @@ export const loggerMiddleware: Middleware = () => (next) => (action) => {
             // eslint-disable-next-line no-console
             console.warn('error in store', action);
         }
-        logger.error({
-            message: 'error in store',
-            data: {
-                action,
-            }
-        }, ex as Error);
+        logger.error(
+            {
+                message: 'error in store',
+                data: {
+                    action,
+                },
+            },
+            ex as Error,
+        );
     }
     return undefined;
 };
