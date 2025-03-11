@@ -17,7 +17,7 @@ const logger = new ChaynsLogger({
             // eslint-disable-next-line no-param-reassign
             payload.siteId ??= currentPage.siteId;
             // eslint-disable-next-line no-param-reassign
-            payload.customNumber ??= currentPage.id;
+            payload.pageId ??= currentPage.id;
             // eslint-disable-next-line no-param-reassign
             payload.personId ??= getUser()?.personId;
             // eslint-disable-next-line no-param-reassign

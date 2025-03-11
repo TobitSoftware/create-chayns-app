@@ -23,7 +23,7 @@ export const loggerMiddleware = () => (next) => (action) => {
         return next(action);
     } catch (ex) {
         if (process.env.NODE_ENV === 'development') {
-            console.warn('error in store', action);
+            console.warn('error in store', action, ex);
         }
         logger.error(
             {

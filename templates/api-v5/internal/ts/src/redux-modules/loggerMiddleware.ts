@@ -39,7 +39,7 @@ export const loggerMiddleware: Middleware = () => (next) => (action) => {
     } catch (ex) {
         if (process.env.NODE_ENV === 'development') {
             // eslint-disable-next-line no-console
-            console.warn('error in store', action);
+            console.warn('error in store', action, ex);
         }
         logger.error(
             {
