@@ -25,7 +25,8 @@ export const loggerMiddleware: Middleware = () => (next) => (action) => {
                 // eslint-disable-next-line no-console
                 console.warn('redux action error', action);
             }
-            logger.error(
+            const isFetchError = (metaAction.payload as undefined | { status?: string | number })?.status === 'FETCH_ERROR';
+            logger[isFetchError ? 'warning' : 'error'](
                 {
                     message: 'redux action error',
                     customText: metaAction.type,

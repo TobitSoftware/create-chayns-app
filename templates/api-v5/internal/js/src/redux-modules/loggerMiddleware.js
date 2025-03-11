@@ -10,7 +10,8 @@ export const loggerMiddleware = () => (next) => (action) => {
             if (process.env.NODE_ENV === 'development') {
                 console.warn('redux action error', action);
             }
-            logger.error(
+            const isFetchError = metaAction.payload?.status === 'FETCH_ERROR';
+            logger[isFetchError ? 'warning' : 'error'](
                 {
                     message: 'redux action error',
                     customText: metaAction.type,
