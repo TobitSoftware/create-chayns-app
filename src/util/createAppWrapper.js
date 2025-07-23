@@ -69,9 +69,6 @@ export const createAppWrapper = ({
     if (moduleFederation) {
         lines.push(`${' '.repeat(indent)}<div className="${packageNameUnderscore}">`);
         indent += 4;
-        lines.push(
-            `${' '.repeat(indent)}{/* eslint-disable-next-line react/jsx-props-no-spreading */}`,
-        );
     }
 
     lines.push(`${' '.repeat(indent)}<ChaynsProvider${moduleFederation ? ' {...props}' : ''}>`);

@@ -33,9 +33,6 @@ const createBaseConfig = (name, description) => ({
         tabWidth: 4,
         printWidth: 100,
     },
-    eslintConfig: {
-        extends: '@chayns-toolkit',
-    },
     dependencies: {},
     devDependencies: {},
 });

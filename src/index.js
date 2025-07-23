@@ -246,10 +246,6 @@ async function createChaynsApp({
                 projectName,
                 templateDir: path.join(` ${dirname} `.trim(), templateSharedPath),
             });
-            await copyFile(
-                getTemplatePath(`../templates/api-v5/shared/ts/.eslintrc`),
-                path.join(destination, '.eslintrc'),
-            );
             if (tobitInternal) {
                 const templateInternalPath = `../templates/api-v5/internal/${extension}/src`;
                 await copyTemplate({
@@ -303,6 +299,10 @@ async function createChaynsApp({
         await copyFile(
             getTemplatePath(`../templates/api-v5/shared/.env.development.local`),
             path.join(destination, '.env.development.local'),
+        );
+        await copyFile(
+            getTemplatePath('../templates/shared/eslint.config.mjs'),
+            path.join(destination, 'eslint.config.mjs'),
         );
 
         if (!fs.existsSync(path.join(destination, '/src/constants'))) {

@@ -5,7 +5,6 @@ import App from './App';
 
 const AppWrapper = (props: ComponentPropsWithoutRef<typeof ChaynsProvider>) => (
     <div className="{{ package-name-underscore }}">
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <ChaynsProvider {...props}>
             <PageProvider>
                 <App />

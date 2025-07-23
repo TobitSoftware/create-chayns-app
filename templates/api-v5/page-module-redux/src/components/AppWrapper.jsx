@@ -7,7 +7,6 @@ import store from '../redux-modules';
 
 const AppWrapper = (props) => (
     <div className="{{ package-name-underscore }}">
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <ChaynsProvider {...props}>
             <Provider store={store}>
                 <PageProvider>
