@@ -1,9 +1,9 @@
-const { buildToolkitConfig } = require('chayns-toolkit');
+import { buildToolkitConfig } from 'chayns-toolkit';
 
-module.exports = buildToolkitConfig({
+export default buildToolkitConfig({
     development: {
         host: '0.0.0.0',
-        port: process.env.PORT || 8080,
+        port: +(process.env.PORT || 8080),
     },
     output: {
         entryPoints: {
@@ -13,6 +13,6 @@ module.exports = buildToolkitConfig({
             },
             // Add more entrypoints here
         },
-        cssVersion: '5.0',
+        cssVersion: '4.2',
     },
 });

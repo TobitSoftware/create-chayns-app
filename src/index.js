@@ -378,9 +378,9 @@ async function createChaynsApp({
         }
 
         const fileSource = getTemplatePath(
-            `../templates/api-v5/shared/toolkit.config${moduleFederation ? '-module' : ''}.js`,
+            `../templates/api-v5/shared/toolkit.config${moduleFederation ? '-module' : ''}.mjs`,
         );
-        const fileDestination = path.join(destination, 'toolkit.config.js');
+        const fileDestination = path.join(destination, `toolkit.config.${useTypescript ? 't' : 'mj'}s`);
         let configContent = fs.readFileSync(fileSource, 'utf-8');
         if (tobitInternal) {
             configContent = configContent.replace(
