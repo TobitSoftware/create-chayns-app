@@ -3,7 +3,7 @@ import { buildToolkitConfig } from 'chayns-toolkit';
 export default buildToolkitConfig({
     development: {
         host: '0.0.0.0',
-        port: process.env.PORT || 8080,
+        port: +(process.env.PORT || 8080),
     },
     output: {
         entryPoints: {
