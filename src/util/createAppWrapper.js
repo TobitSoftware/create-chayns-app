@@ -12,9 +12,6 @@ export const createAppWrapper = ({
     if (moduleFederation && useTypescript) {
         reactNamedImportsList.push('ComponentPropsWithoutRef');
     }
-    if (tobitInternal) {
-        reactNamedImportsList.push('Suspense');
-    }
     if (moduleFederation && useRedux) {
         reactNamedImportsList.push('useState');
     }
@@ -83,8 +80,6 @@ export const createAppWrapper = ({
     indent += 4;
 
     if (tobitInternal) {
-        lines.push(`${' '.repeat(indent)}<Suspense>`);
-        indent += 4;
         lines.push(`${' '.repeat(indent)}<TextStringProvider libraries={libraries}>`);
         indent += 4;
     }
@@ -94,8 +89,6 @@ export const createAppWrapper = ({
     if (tobitInternal) {
         indent -= 4;
         lines.push(`${' '.repeat(indent)}</TextStringProvider>`);
-        indent -= 4;
-        lines.push(`${' '.repeat(indent)}</Suspense>`);
     }
 
     indent -= 4;
