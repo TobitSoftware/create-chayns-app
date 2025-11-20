@@ -92,6 +92,7 @@ export const createPackageJson = async ({
         }
         if (useTypescript) {
             Object.assign(devDependencies, getTypescriptDevDeps(reactVersion));
+            delete dependencies['prop-types'];
         }
         if (useVitest) {
             Object.assign(devDependencies, testDevDeps);
