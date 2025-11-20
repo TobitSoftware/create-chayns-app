@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { createReduxErrorLoggerMiddleware } from 'chayns-logger';
+import logger from '../utils/logger';
 import { counterReducer } from './counter/slice';
-import { loggerMiddleware } from './loggerMiddleware';
 
 const rootReducer = combineReducers({
     counter: counterReducer,
@@ -9,7 +10,7 @@ const rootReducer = combineReducers({
 export const createStore = (preloadedState?: RootState) =>
     configureStore({
         reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(createReduxErrorLoggerMiddleware(logger)),
         preloadedState,
     });
 
