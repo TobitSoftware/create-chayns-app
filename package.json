@@ -1,6 +1,6 @@
 {
     "name": "create-chayns-app",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "private": false,
     "description": "Create a new chayns® development project in one command.",
     "keywords": [
