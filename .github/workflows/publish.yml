@@ -6,7 +6,11 @@ on:
         tags:
             - 'v*'
 
-env: 
+permissions:
+    id-token: write  # Required for OIDC
+    contents: read
+
+env:
     TAG: ${{ contains(github.ref_name, 'alpha') && 'alpha' || (contains(github.ref_name, '-') && 'beta' || 'latest') }}
 
 jobs:
@@ -18,7 +22,8 @@ jobs:
               with:
                   node-version: '20'
                   registry-url: https://registry.npmjs.org/
+            # Ensure npm 11.5.1 or later is installed
+            - name: Update npm
+              run: npm install -g npm@latest
             - run: npm ci
             - run: npm publish --tag ${{ env.TAG }}
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
