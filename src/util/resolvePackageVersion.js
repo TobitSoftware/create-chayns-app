@@ -1,33 +1,14 @@
 import { exec } from 'node:child_process';
 import chalk from 'chalk';
-import semver from 'semver';
 import { internalDeps } from '../constants/dependencies.js';
 
 export const resolvePackageVersion = async (pkg, tag) => {
     const target = tag ? `${pkg}@${tag}` : pkg;
-    if (pkg in internalDeps) {
-        try {
-            const res = await fetch(`https://repo.tobit.ag/repository/npm/${pkg}`);
-            if (res.ok) {
-                const json = await res.json();
 
-                if (tag in json['dist-tags']) {
-                    return `^${json['dist-tags'][tag]}`;
-                }
-
-                const version = semver.maxSatisfying(Object.keys(json.versions), tag);
-                if (version) {
-                    return `^${version}`;
-                }
-            }
-        } catch {
-            //
-        }
-    }
 
     try {
         const result = await new Promise((resolve, reject) => {
-            exec(`npm view ${target} version --json`, (error, out) => {
+            exec(`npm view ${target} version --json${pkg in internalDeps ? ' --registry https://repo.tobit.ag/repository/npm/' : ''}`, (error, out) => {
                 if (error) {
                     reject(error);
                 } else {
