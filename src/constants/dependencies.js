@@ -31,7 +31,7 @@ export const reduxDeps = {
 };
 
 export const getTypescriptDevDeps = (reactVersion) => ({
-    typescript: 'latest',
+    typescript: '5',
     '@types/react': String(reactVersion),
     '@types/react-dom': String(reactVersion),
 });
