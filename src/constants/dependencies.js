@@ -47,6 +47,10 @@ export const testDevDeps = {
 };
 
 export const internalDeps = {
-    'chayns-logger': 'latest',
-    'tobit-textstrings': 'latest',
+    '@chayns/textstrings': 'latest',
 };
+
+export const internalDepsPrivateRegistry = {
+    'chayns-logger': 'latest',
+};
+

@@ -30,7 +30,7 @@ export const createAppWrapper = ({
     );
     lines.push(`import { PageProvider } from '@chayns-components/core';`);
     if (tobitInternal) {
-        lines.push(`import { TextStringProvider } from 'tobit-textstrings';`);
+        lines.push(`import { TextStringProvider } from '@chayns/textstrings';`);
     }
     lines.push(`import App from './App';`);
     if (useRedux) {

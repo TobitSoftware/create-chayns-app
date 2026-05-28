@@ -1,14 +1,14 @@
 import { exec } from 'node:child_process';
 import chalk from 'chalk';
-import { internalDeps } from '../constants/dependencies.js';
+import { internalDepsPrivateRegistry } from '../constants/dependencies.js';
 
 export const resolvePackageVersion = async (pkg, tag) => {
     const target = tag ? `${pkg}@${tag}` : pkg;
-
+    const needsRegistry = pkg in internalDepsPrivateRegistry;
 
     try {
         const result = await new Promise((resolve, reject) => {
-            exec(`npm view ${target} version --json${pkg in internalDeps ? ' --registry https://repo.tobit.ag/repository/npm/' : ''}`, (error, out) => {
+            exec(`npm view ${target} version --json${needsRegistry ? ' --registry https://repo.tobit.ag/repository/npm/' : ''}`, (error, out) => {
                 if (error) {
                     reject(error);
                 } else {

@@ -30,7 +30,7 @@ program
     .option('-M, --module-federation', 'install to use as module (only internal)')
     .option(
         '-T, --tobit-internal',
-        'includes tobit internal packages (chayns-logger and tobit-textstrings)',
+        'includes tobit internal packages (chayns-logger and @chayns/textstrings)',
     )
     .option(
         '-p, --package-manager <manager>',
@@ -449,7 +449,7 @@ async function createChaynsApp({
             )} folder in your favorite editor.`,
         );
         console.log(
-            `Initialize ${chalk.yellowBright('tobit-textstrings')} by calling ${chalk.cyanBright('npx tobit-textstrings init')}.`,
+            `Initialize ${chalk.yellowBright('@chayns/textstrings')} by calling ${chalk.cyanBright('npx textstrings init')}.`,
         );
         console.log(`Search for ${chalk.greenBright('TODO:')} and follow the instructions.`);
         console.log(`Start ${chalk.cyanBright('`' + runCommand + '`')}.\n`);

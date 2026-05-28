@@ -7,6 +7,7 @@ import {
     v5DevDeps,
     testDevDeps,
     internalDeps,
+    internalDepsPrivateRegistry,
 } from '../constants/dependencies.js';
 import { ProjectVersions } from '../constants/projectTypes.js';
 import { resolvePackageVersion } from './resolvePackageVersion.js';
@@ -98,7 +99,7 @@ export const createPackageJson = async ({
             Object.assign(devDependencies, testDevDeps);
         }
         if (tobitInternal) {
-            Object.assign(dependencies, internalDeps);
+            Object.assign(dependencies, internalDeps, internalDepsPrivateRegistry);
         }
         content = await buildPackageJson({ ...options, dependencies, devDependencies });
     }
