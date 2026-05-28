@@ -17,7 +17,22 @@ export const resolvePackageVersion = async (pkg, tag) => {
             });
         });
         const parsedResult = JSON.parse(result);
-        const version = Array.isArray(parsedResult) ? parsedResult.pop() : parsedResult;
+        let version;
+        if (Array.isArray(parsedResult)) {
+            version = parsedResult.reduce((max, current) => {
+                const maxParts = max.split('.').map(Number);
+                const currentParts = current.split('.').map(Number);
+                for (let i = 0; i < Math.max(maxParts.length, currentParts.length); i++) {
+                    const maxNum = maxParts[i] || 0;
+                    const currentNum = currentParts[i] || 0;
+                    if (currentNum > maxNum) return current;
+                    if (currentNum < maxNum) return max;
+                }
+                return max;
+            });
+        } else {
+            version = parsedResult;
+        }
         return `^${version}`;
     } catch {
         //
