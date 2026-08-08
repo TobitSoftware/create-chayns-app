@@ -62,10 +62,10 @@ async function createChaynsApp({
 }, command) {
     let projectVersion;
     let projectType;
-    let internalRegistryAvailable;
+    let internalRegistryAvailablePromise;
     const getInternalRegistryAvailable = async () => {
-        internalRegistryAvailable ??= await canAccessInternalRegistry();
-        return internalRegistryAvailable;
+        internalRegistryAvailablePromise ??= canAccessInternalRegistry();
+        return internalRegistryAvailablePromise;
     };
 
     if (moduleFederation) {
@@ -94,6 +94,8 @@ async function createChaynsApp({
 
     if (!moduleFederation && projectVersion !== ProjectVersions.v5) {
         tobitInternal = false;
+    } else {
+        void getInternalRegistryAvailable();
     }
 
     let validPackageName = false;
