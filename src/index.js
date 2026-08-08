@@ -22,6 +22,19 @@ const { prompt } = Enquirer;
 const program = new Command();
 const dirname = import.meta.dirname;
 
+const canAccessInternalRegistry = async () => {
+    try {
+        const res = await fetch(`https://repo.tobit.ag`, {
+            method: 'HEAD',
+            signal: AbortSignal.timeout(3000),
+        });
+
+        return res.ok;
+    } catch {
+        return false;
+    }
+};
+
 program
     .version(pkg.version)
     .option('-G, --no-git', 'initialize the project without a git repository')
@@ -36,7 +49,7 @@ program
         '-p, --package-manager <manager>',
         'specify the package manager to use (`npm` or `yarn`). Defaults to the one used to execute the command.',
     )
-    .action(createChaynsApp)
+    .action((options, command) => createChaynsApp(options, command))
     .parse(process.argv);
 
 async function createChaynsApp({
@@ -46,25 +59,19 @@ async function createChaynsApp({
     packageManager,
     moduleFederation,
     tobitInternal,
-}) {
+}, command) {
     let projectVersion;
     let projectType;
+    let internalRegistryAvailable;
+    const getInternalRegistryAvailable = async () => {
+        internalRegistryAvailable ??= await canAccessInternalRegistry();
+        return internalRegistryAvailable;
+    };
 
-    if (tobitInternal) {
-        try {
-            const res = await fetch(`https://repo.tobit.ag`, {
-                method: 'HEAD',
-                signal: AbortSignal.timeout(3000),
-            });
-            if (!res.ok) {
-                tobitInternal = false;
-            }
-        } catch {
-            tobitInternal = false;
-        }
-    }
-
-    if (!moduleFederation) {
+    if (moduleFederation) {
+        projectVersion = ProjectVersions.v5;
+        projectType = ProjectTypes.moduleFederation;
+    } else {
         ({ projectVersion } = await prompt({
             type: 'select',
             name: 'projectVersion',
@@ -76,9 +83,17 @@ async function createChaynsApp({
             type: 'select',
             name: 'projectType',
             message: 'What type of project do you want to create?',
-            choices: Object.values(ProjectTypes),
+            choices:
+                projectVersion === ProjectVersions.v5
+                    ? Object.values(ProjectTypes)
+                    : [ProjectTypes.page, ProjectTypes.pagemakerPlugin],
             initial: 0,
         }));
+        moduleFederation = projectType === ProjectTypes.moduleFederation;
+    }
+
+    if (!moduleFederation && projectVersion !== ProjectVersions.v5) {
+        tobitInternal = false;
     }
 
     let validPackageName = false;
@@ -131,7 +146,21 @@ async function createChaynsApp({
     const destination = path.resolve(projectName);
 
     const usedPackageManager = packageManager || (isYarn ? 'yarn' : 'npm');
+
     if (projectVersion === ProjectVersions.v4) {
+        if (command.getOptionValueSource('install') !== 'cli') {
+            ({ install } = await prompt({
+                type: 'select',
+                name: 'install',
+                message: 'Do you want to install packages after initialization?',
+                choices: YesOrNoChoices,
+                initial: 0,
+                result(selected) {
+                    return this.map(selected)[selected];
+                },
+            }));
+        }
+
         console.log(
             `\n${chalk.bold.magentaBright('Awesome!')} Please wait a quick second while we bootstrap your project...\n`,
         );
@@ -207,6 +236,30 @@ async function createChaynsApp({
             },
         });
 
+        if (tobitInternal) {
+            if (!(await getInternalRegistryAvailable())) {
+                console.log(
+                    `\n${chalk.yellowBright('Tobit internal packages are unavailable because the internal npm registry could not be reached.')}\n`,
+                );
+                tobitInternal = false;
+            }
+        } else if (tobitInternal === undefined) {
+            if (await getInternalRegistryAvailable()) {
+                ({ tobitInternal } = await prompt({
+                    type: 'select',
+                    name: 'tobitInternal',
+                    message: 'Do you want to include Tobit internal packages?',
+                    choices: YesOrNoChoices,
+                    initial: 0,
+                    result(selected) {
+                        return this.map(selected)[selected];
+                    },
+                }));
+            } else {
+                tobitInternal = false;
+            }
+        }
+
         const { useVitest } = await prompt({
             type: 'select',
             name: 'useVitest',
@@ -217,6 +270,19 @@ async function createChaynsApp({
                 return this.map(selected)[selected];
             },
         });
+
+        if (command.getOptionValueSource('install') !== 'cli') {
+            ({ install } = await prompt({
+                type: 'select',
+                name: 'install',
+                message: 'Do you want to install packages after initialization?',
+                choices: YesOrNoChoices,
+                initial: 0,
+                result(selected) {
+                    return this.map(selected)[selected];
+                },
+            }));
+        }
 
         const getTemplatePath = (temp) => path.join(` ${dirname} `.trim(), temp);
         const copyFile = async (from, to, map) => {

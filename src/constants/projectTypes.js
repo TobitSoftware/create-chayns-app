@@ -1,6 +1,7 @@
 export const ProjectTypes = {
     page: 'A complete page',
     pagemakerPlugin: 'A pagemaker plugin',
+    moduleFederation: 'A module federation module',
 };
 
 export const ProjectVersions = {
