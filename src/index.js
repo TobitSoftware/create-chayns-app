@@ -70,12 +70,14 @@ async function createChaynsApp({
             name: 'projectVersion',
             message: 'What api version do you want to use?',
             choices: Object.values(ProjectVersions),
+            initial: 1,
         }));
         ({ projectType } = await prompt({
             type: 'select',
             name: 'projectType',
             message: 'What type of project do you want to create?',
             choices: Object.values(ProjectTypes),
+            initial: 0,
         }));
     }
 
@@ -177,6 +179,7 @@ async function createChaynsApp({
                 { name: 'v18', value: 18 },
                 { name: 'v19', value: 19 },
             ],
+            initial: 1,
             result(selected) {
                 return this.map(selected)[selected];
             },
@@ -187,6 +190,7 @@ async function createChaynsApp({
             name: 'useRedux',
             message: 'Do you want to add redux-toolkit?',
             choices: YesOrNoChoices,
+            initial: 0,
             result(selected) {
                 return this.map(selected)[selected];
             },
@@ -197,6 +201,7 @@ async function createChaynsApp({
             name: 'useTypescript',
             message: 'Do you want to add typescript?',
             choices: YesOrNoChoices,
+            initial: 0,
             result(selected) {
                 return this.map(selected)[selected];
             },
@@ -207,6 +212,7 @@ async function createChaynsApp({
             name: 'useVitest',
             message: 'Do you want to add vitest?',
             choices: YesOrNoChoices,
+            initial: 1,
             result(selected) {
                 return this.map(selected)[selected];
             },
