@@ -15,6 +15,17 @@ import path from 'path';
 import fs from 'fs';
 import ora from 'ora';
 
+const reactPeerPackages = ['react', 'react-dom'];
+
+const toMinorPeerRange = (version) => {
+    const match = version.match(/^(?:[~^])?(\d+)\.(\d+)\.\d+/);
+    if (!match) {
+        return version;
+    }
+
+    return `^${match[1]}.${match[2]}.0`;
+};
+
 const createBaseConfig = (name, description) => ({
     name,
     version: '1.0.0',
@@ -43,6 +54,7 @@ export const buildPackageJson = async ({
     description = '',
     devDependencies = {},
     dependencies = {},
+    peerDependencies = {},
     useTypescript,
     useVitest,
 }) => {
@@ -54,6 +66,17 @@ export const buildPackageJson = async ({
 
     for (let [k, v] of Object.entries(dependencies).sort(([a], [b]) => a.localeCompare(b))) {
         config.dependencies[k] = await resolvePackageVersion(k, v);
+    }
+
+    const peerDependencyEntries = Object.entries(peerDependencies).sort(([a], [b]) =>
+        a.localeCompare(b),
+    );
+    if (peerDependencyEntries.length) {
+        config.peerDependencies = {};
+        for (let [k, v] of peerDependencyEntries) {
+            const resolvedVersion = config.devDependencies[k] || (await resolvePackageVersion(k, v));
+            config.peerDependencies[k] = toMinorPeerRange(resolvedVersion);
+        }
     }
 
     if (useTypescript) {
@@ -73,6 +96,7 @@ export const createPackageJson = async ({
     reactVersion,
     useRedux,
     tobitInternal,
+    moduleFederation,
     ...options
 }) => {
     const { useTypescript, useVitest } = options;
@@ -88,6 +112,14 @@ export const createPackageJson = async ({
     } else {
         const dependencies = getV5Deps(reactVersion);
         const devDependencies = { ...v5DevDeps };
+        const peerDependencies = {};
+        if (moduleFederation) {
+            for (const packageName of reactPeerPackages) {
+                devDependencies[packageName] = dependencies[packageName];
+                peerDependencies[packageName] = dependencies[packageName];
+                delete dependencies[packageName];
+            }
+        }
         if (useRedux) {
             Object.assign(dependencies, reduxDeps);
         }
@@ -101,7 +133,12 @@ export const createPackageJson = async ({
         if (tobitInternal) {
             Object.assign(dependencies, internalDeps, internalDepsPrivateRegistry);
         }
-        content = await buildPackageJson({ ...options, dependencies, devDependencies });
+        content = await buildPackageJson({
+            ...options,
+            dependencies,
+            devDependencies,
+            peerDependencies,
+        });
     }
     spinner.succeed('Resolved latest versions of required dependencies');
 

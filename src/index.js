@@ -282,6 +282,7 @@ async function createChaynsApp({
             useTypescript,
             useVitest,
             tobitInternal,
+            moduleFederation,
         });
 
         // copy README
