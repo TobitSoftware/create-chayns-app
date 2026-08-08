@@ -1,8 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import AppWrapper from './components/AppWrapper';
-{{ logger-import }}
+
 try {
-    const root = createRoot(document.querySelector('#root') as Element);
+    const root = createRoot(document.querySelector('#root'));
     root.render(<AppWrapper />);
 } catch (e) {
     console.error('Encountered error at `ReactDOM.render`: ', e);
