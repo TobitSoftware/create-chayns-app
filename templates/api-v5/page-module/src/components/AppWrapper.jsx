@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChaynsProvider, withCompatMode } from 'chayns-api';
 import { PageProvider } from '@chayns-components/core';
 import App from './App';

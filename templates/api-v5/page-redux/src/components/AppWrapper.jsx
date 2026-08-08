@@ -1,4 +1,3 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { ChaynsProvider } from 'chayns-api';
 import { PageProvider } from '@chayns-components/core';

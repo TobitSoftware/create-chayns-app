@@ -14,5 +14,7 @@ export default buildToolkitConfig({
             // Add more entrypoints here
         },
         cssVersion: '5.0',
+        reactRuntime: 'automatic',
+        reactCompiler: true,
     },
 });

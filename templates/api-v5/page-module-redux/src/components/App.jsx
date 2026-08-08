@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { WaitUntil } from 'chayns-api';
 import { SmallWaitCursor } from '@chayns-components/core';
 import { useSelector } from 'react-redux';

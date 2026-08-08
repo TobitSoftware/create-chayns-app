@@ -11,5 +11,7 @@ export default buildToolkitConfig({
         },
         cssVersion: '5.0',
         prefixCss: true,
+        reactRuntime: 'automatic',
+        reactCompiler: true,
     },
 });

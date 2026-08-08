@@ -1,9 +1,8 @@
-import React, { ComponentPropsWithoutRef } from 'react';
-import { ChaynsProvider, withCompatMode } from 'chayns-api';
+import { ChaynsProvider, type ChaynsProviderProps, withCompatMode } from 'chayns-api';
 import { PageProvider } from '@chayns-components/core';
 import App from './App';
 
-const AppWrapper = (props: ComponentPropsWithoutRef<typeof ChaynsProvider>) => (
+const AppWrapper = (props: ChaynsProviderProps) => (
     <div className="{{ package-name-underscore }}">
         <ChaynsProvider {...props}>
             <PageProvider>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSite } from 'chayns-api';
 
 const App = () => {

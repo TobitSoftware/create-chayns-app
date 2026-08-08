@@ -7,13 +7,15 @@
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "isolatedModules": true,
-        "jsx": "react",
+        "jsx": "react-jsx",
         "lib": ["DOM", "ESNext"],
-        "moduleResolution": "Node",
+        "module": "Preserve",
+        "moduleResolution": "Bundler",
         "target": "ES2020",
         "noEmit": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "strict": true
+        "strict": true,
+        "verbatimModuleSyntax": true
     }
 }
