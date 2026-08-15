@@ -75,18 +75,18 @@ yarn dev
 
 You need to develop the project in a chayns-environment for all features to work
 properly. You have to create a Page on a chayns-Site you can manage, if you do
-not have one yet, create one [here](https://chayns.net/).
+not have one yet, create one [here](https://chayns.site/).
 
 After finishing the setup of your site, head to **Administration > Content >
-Pages** and click the "Add Page" button at the top.
+Pages** and choose the "Add Page" option via the floating button in the bottom right corner.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-page.png)
+![](assets/guide/add-page.png)
 
-Choose the "Include website" option and enter a name you like (e.g. "Local
+Choose the "External website" option and enter a name you like (e.g. "Local
 Development"). Set the source to `http://localhost:1234/`, the address at which
 your local development server operates.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/include-website.png)
+![](assets/guide/create-page.png)
 
 Your freshly created page should appear in the menu. Navigate to the page by
 clicking it.
@@ -117,26 +117,26 @@ properly. You have to create a Page on a chayns-Site you can manage, if you do
 not have one yet, create one [here](https://chayns.net/).
 
 After finishing the setup of your site, head to **Administration > Content >
-Pages** and click the "Add Page" button at the top.
+Pages** and choose the "Add Page" option via the floating button in the bottom right corner.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-page.png)
+![](assets/guide/add-page.png)
 
-Choose the "Create a page" option and enter a name you like (e.g. "Local
+Enter a name you like (e.g. "Local
 Development"). Click the "Add" button to create the Page.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/create-page.png)
+![](assets/guide/create-page.png)
 
 Your freshly created page should appear in the menu. Navigate to the page by
 clicking it. There we want to enter _"admin-mode"_ by activating the switch in
 the main menu, next to the name of your Site.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/admin-switch.png)
+![](assets/guide/admin-switch.png)
 
 A floating button with a big plus sign should appear in the bottom right corner.
-Click it and choose **Interactive > Iframe** in the flyout-menu to add an iframe
+Click it and choose **Plugins > Iframe** in the flyout-menu to add an iframe
 to your Page.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-iframe.png)
+![](assets/guide/add-iframe.png)
 
 Hover over your newly created iframe and activate the chayns-API by clicking on
 the code-symbol and confirming your choice in the dialog.
@@ -147,7 +147,7 @@ Now we have to set the iframe source (_"Quelle"_) to the address of your local
 development server by tapping on the gear-icon and entering
 `http://localhost:1234/` in the second input field.
 
-![](https://raw.githubusercontent.com/TobitSoftware/create-chayns-app/HEAD/assets/guide/add-local-path.png)
+![](assets/guide/add-local-path.png)
 
 **Congrats!** You are now ready to develop your Pagemaker plugin! Start making
 changes to your code and you should see them reflected on your Page in
@@ -171,10 +171,6 @@ especially non-developers.
 
 ### How can I deploy the application so it will be permanently available to all users of my Site?
 
-The most simple way of deploying your app is to use a cloud deployment platform
-like [Vercel](https://vercel.com/home) or [Netlify](https://www.netlify.com/).
-These services will deploy any project for you, aslong as it is managed with a
-Git repository on GitHub or similar services.
+The simplest way of deploying your app is to build it locally via `chayns-toolkit build` and then upload the build directory in the chayns space of your site.
 
-If these platforms ask for a build command, enter `chayns-toolkit build` and if
-they ask for a publish directory, enter `build`.
+There is currently no automated deployment solution for chayns® projects, but we might look into this in the future. Especially during the process of improving our online IDE and the consistency between the local development environment and the online IDE.
